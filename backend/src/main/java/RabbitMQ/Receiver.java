@@ -5,6 +5,8 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,37 +46,42 @@ public class Receiver {
             return channel.basicConsume(queueName, true, null);
         else{
             final BlockingQueue<String> msg = new ArrayBlockingQueue<String>(1);
-            channel.basicConsume(queueName, true, new DefaultConsumer(channel) {
 
+            channel.basicConsume(queueName, false, new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag,
                                            Envelope envelope,
                                            AMQP.BasicProperties properties,
                                            byte[] body) throws IOException {
-                    System.out.println("HANDLE");
                     if (properties.getCorrelationId().equals(corrID)) {
                         msg.offer(properties.getCorrelationId());
+                        channel.basicAck(envelope.getDeliveryTag(), false);
+                    }
+                    else{
+                        channel.basicNack(envelope.getDeliveryTag(),false, true);
                     }
                 }
             });
-            System.out.println("return");
-            System.out.println("take "+msg.take());
             return msg.take();
     }
-
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, TimeoutException {
         {
-            Receiver r2 = new Receiver(new RabbitMQConfig("USER"),"5f0f0c39-8e09-4cd8-b2c5-0f6eebe0f5c3");
+            Receiver r2 = new Receiver(new RabbitMQConfig("USER"),"37485e0e-aebf-4505-bc29-4fe929729cd8");
 //            Receiver r1 = new Receiver(new RabbitMQConfig("USER"));
             try {
-                System.out.println("R2 received: "+ r2.receive());
                 System.out.println("TRY");
+                System.out.println("R2 received: "+ r2.receive());
 //                System.out.println("R1 received: "+ r1.receive());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("CATCH");
+            }
+            finally {
+                System.out.println("FINAALLLYY");
+//                r2.channel.close();
+//                r2.connection.close();
             }
         }
     }
