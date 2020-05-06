@@ -1,0 +1,9 @@
+RabbitMQ\RabbitMQConfig.class
+ScalableQueues\Worker.class
+ScalableQueues\NewTask.class
+ScalableQueues\Worker$1.class
+Redis\Redis.class
+RabbitMQ\Recv.class
+RabbitMQ\Recv$1.class
+RabbitMQ\Producer.class
+RabbitMQ\Send.class
