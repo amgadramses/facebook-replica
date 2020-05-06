@@ -28,7 +28,6 @@ public class Sender {
                     .replyTo(config.getQueueName() + ".OUTQUEUE")
                     .build();
             connection = config.connect();
-            System.out.println("producer");
             Channel channel = connection.createChannel();
             channel.queueDeclare(config.getQueueName() + ".INQUEUE", false, false, false, null);
             channel.basicPublish("", config.getQueueName() + ".INQUEUE", props, msg.getBytes("UTF-8"));

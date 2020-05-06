@@ -9,8 +9,10 @@ import io.netty.handler.codec.http.*;
 import org.json.JSONObject;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
@@ -29,7 +31,6 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
     volatile String responseBody;
     Logger log = Logger.getLogger(NettyHTTPServer.class.getName());
     ExecutorService executorService = Executors.newCachedThreadPool();
-
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
         ctx.fireChannelReadComplete();
@@ -40,9 +41,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
             throws Exception {
         if (correlationId == null)
             correlationId = UUID.randomUUID().toString();
-        System.out.println(correlationId+ " Server");
         if (msg instanceof HttpRequest) {
-            System.out.println("1");
             HttpRequest request = this.request = (HttpRequest) msg;
             if (HttpHeaders.is100ContinueExpected(request)) {
                 send100Continue(ctx);
@@ -50,29 +49,30 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
 
         }
         if (msg instanceof HttpContent) {
-            System.out.println("2");
             HttpContent httpContent = (HttpContent) msg;
             ByteBuf content = httpContent.content();
             setRequestBody(content.toString(CharsetUtil.UTF_8));
             ctx.fireChannelRead(content.copy());
         }
         if (msg instanceof LastHttpContent) {
-            System.out.println("3");
 //            LastHttpContent trailer = (LastHttpContent) msg;
             HttpObject trailer = (HttpObject) msg;
             writeResponse(trailer, ctx);
         }
     }
 
-    private synchronized void writeResponse(HttpObject currentObj, final ChannelHandlerContext ctx) {
+    private synchronized void writeResponse(HttpObject currentObj, final ChannelHandlerContext ctx) throws ExecutionException, InterruptedException {
         System.out.println("Request Body: " + requestBody);
         JSONObject requestJson = new JSONObject(requestBody);
 
-        //TODO NettyNotifier
+        Notifier notifier = new Notifier(this, requestJson.getString("queue"));
+        
         System.out.println("waited");
         sendToMQ(requestBody, requestJson.getString("queue").toUpperCase());
+        Future future = executorService.submit(notifier);
+        this.responseBody = (String) future.get();
 
-        setResponseBody("{'response': 'gamed', 'code':'200'}");
+        setResponseBody("{'response':" +this.responseBody+", 'code':'200'}");
 
         if (this.responseBody == null) {
             System.out.println("Null Response Method: " + requestJson.getString("method"));
