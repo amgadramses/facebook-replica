@@ -108,8 +108,8 @@ public class Receiver {
 
 //            Sender2 s = new Sender2(new RabbitMQConfig("USER"));
 //            Logger log = Logger.getLogger(NettyHTTPServer.class.getName());
-//
-//            s.send("YOUKAAAA",msg.getProps().getCorrelationId(), log);
+//            Message m = new Message("YOUKAAA", msg.getProps());
+//            s.send(m, log);
         }
 
     }

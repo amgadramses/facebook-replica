@@ -1,7 +1,10 @@
 package NettyHTTP;
 
+import RabbitMQ.Message;
 import RabbitMQ.Sender;
 import RabbitMQ.RabbitMQConfig;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.impl.AMQBasicProperties;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -109,9 +112,15 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
 
     }
 
-    private void sendToMQ(String message, String queue) {
+    private void sendToMQ(String msg, String queue) {
         Sender s = new Sender(new RabbitMQConfig(queue));
-        s.send(message, correlationId, log);
+        AMQP.BasicProperties props = new AMQP.BasicProperties
+                .Builder()
+                .correlationId(correlationId)
+                .replyTo(s.getConfig().getQueueName() + ".OUTQUEUE")
+                .build();
+        Message message = new Message(msg, props);
+        s.send(message, log);
     }
 
     private static void send100Continue(ChannelHandlerContext ctx) {
