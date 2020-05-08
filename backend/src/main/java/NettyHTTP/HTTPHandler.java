@@ -1,10 +1,7 @@
 package NettyHTTP;
 
-import RabbitMQ.Message;
 import RabbitMQ.Sender;
 import RabbitMQ.RabbitMQConfig;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.impl.AMQBasicProperties;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -68,10 +65,10 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
         System.out.println("Request Body: " + requestBody);
         JSONObject requestJson = new JSONObject(requestBody);
 
-        Notifier notifier = new Notifier(this, requestJson.getString("queue"));
+        Notifier notifier = new Notifier(this, requestJson.getString("app"));
         
         System.out.println("waited");
-        sendToMQ(requestBody, requestJson.getString("queue").toUpperCase());
+        sendToMQ(requestBody, requestJson.getString("app").toUpperCase());
         Future future = executorService.submit(notifier);
         this.responseBody = (String) future.get();
 
@@ -112,15 +109,9 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
 
     }
 
-    private void sendToMQ(String msg, String queue) {
+    private void sendToMQ(String message, String queue) {
         Sender s = new Sender(new RabbitMQConfig(queue));
-        AMQP.BasicProperties props = new AMQP.BasicProperties
-                .Builder()
-                .correlationId(correlationId)
-                .replyTo(s.getConfig().getQueueName() + ".OUTQUEUE")
-                .build();
-        Message message = new Message(msg, props);
-        s.send(message, log);
+        s.send(message, correlationId, log);
     }
 
     private static void send100Continue(ChannelHandlerContext ctx) {
