@@ -54,11 +54,11 @@ public class LoginCommand extends Command {
 
             if(authenticated){
                 System.out.println("authenticated");
-                CommandsHelp.submit("user", "{\"status\":\"true\"}", parameters.get("correlation_id"), log);
+                CommandsHelp.submit("user", "{\"status\":\"true\", \"code\": \"200\"}", parameters.get("correlation_id"), log);
             }
             else{
                 System.out.println("NOT authenticated");
-                CommandsHelp.submit("user", "{\"status\":\"false\"}", parameters.get("correlation_id"), log);
+                CommandsHelp.submit("user", "{\"status\":\"false\", \"code\": \"200\"}", parameters.get("correlation_id"), log);
             }
 
             proc.close();

@@ -72,7 +72,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
         Future future = executorService.submit(notifier);
         this.responseBody = (String) future.get();
 
-        setResponseBody("{'response':" +this.responseBody+", 'code':'200'}");
+        setResponseBody(this.responseBody);
 
         if (this.responseBody == null) {
             System.out.println("Null Response Method: " + requestJson.getString("method"));
@@ -110,7 +110,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void sendToMQ(String message, String queue) {
-        Sender s = new Sender(new RabbitMQConfig(queue));
+        Sender s = new Sender(new RabbitMQConfig(queue+".INQUEUE"));
         s.send(message, correlationId, log);
     }
 

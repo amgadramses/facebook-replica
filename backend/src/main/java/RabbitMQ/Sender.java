@@ -29,8 +29,8 @@ public class Sender {
                     .build();
             connection = config.connect();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(config.getQueueName() + ".INQUEUE", false, false, false, null);
-            channel.basicPublish("", config.getQueueName() + ".INQUEUE", props, msg.getBytes("UTF-8"));
+            channel.queueDeclare(config.getQueueName(), false, false, false, null);
+            channel.basicPublish("", config.getQueueName(), props, msg.getBytes("UTF-8"));
             System.out.println(" [x] Sent '" + msg + "'");
             channel.close();
             config.disconnect(connection);
