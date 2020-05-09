@@ -2,7 +2,9 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Entities.User;
 import ResourcePools.PostgresConnection;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -16,7 +18,7 @@ import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 public class LoginCommand extends Command {
     private final Logger log = Logger.getLogger(LoginCommand.class.getName());
     int user_id;
-    private String last_name, first_name, email, phone, encrypted_password;
+    private String last_name, first_name, email, phone;
     private Timestamp created_at;
     private boolean is_active;
     private Date birth_date;
@@ -25,10 +27,10 @@ public class LoginCommand extends Command {
     protected void execute() {
         //System.out.println("LOGIN EXEC");
 
-        try{
+        try {
             String sessionID = URLEncoder.encode(new UID().toString(), "UTF-8");
             String cleaned_session = sessionID.replace("%", "\\%");
-            System.out.println("db"+ PostgresConnection.getDataSource());
+            System.out.println("db" + PostgresConnection.getDataSource());
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(false);
 
@@ -40,8 +42,10 @@ public class LoginCommand extends Command {
             proc.setString(2, parameters.get("email"));
 
             proc.execute();
-            String enc_password_db = proc.getString(1);
 
+            String enc_password_db = proc.getString(1);
+            proc.close();
+            dbConn.commit();
             if (enc_password_db == null) {
 //                CommandsHelp.handleError(map.get("app"), map.get("method"),
 //                        "Invalid username", map.get("correlation_id"), LOGGER);
@@ -52,24 +56,64 @@ public class LoginCommand extends Command {
 
             boolean authenticated = enc_password_db.equals(encrypted_password);
 
-            if(authenticated){
-                System.out.println("authenticated");
-                CommandsHelp.submit("user", "{\"status\":\"true\", \"code\": \"200\"}", parameters.get("correlation_id"), log);
+            if (authenticated) {
+                proc = dbConn.prepareCall("{? = call login(?,?)}");
+                proc.setPoolable(true);
+                proc.registerOutParameter(1, Types.OTHER);
+                proc.setString(2, parameters.get("email"));
+                proc.setString(3, cleaned_session);
+                proc.execute();
+                set = (ResultSet) proc.getObject(1);
+                proc.close();
+                dbConn.commit();
+                User user = new User();
+
+                while (set.next()) {
+                    user_id = set.getInt("user_id");
+                    email = set.getString("email");
+                    first_name = set.getString("first_name");
+                    last_name = set.getString("last_name");
+                    created_at = set.getTimestamp("created_at");
+                    is_active = set.getBoolean("is_active");
+                    phone = set.getString("phone");
+                    birth_date = set.getDate("birth_date");
+                }
+                user.setEmail(email);
+                user.setFirst_name(first_name);
+                user.setLast_name(last_name);
+                user.setCreated_at(created_at);
+                user.setIs_active(is_active);
+                user.setPhone(phone);
+                user.setBirth_date(birth_date);
+                user.setSessionID(sessionID);
+
+                responseJson.put("app", parameters.get("app"));
+                responseJson.put("method", parameters.get("method"));
+                responseJson.put("status", "ok");
+                responseJson.put("code", "200");
+                responseJson.set("user", nf.pojoNode(user));
+
             }
             else{
-                System.out.println("NOT authenticated");
-                CommandsHelp.submit("user", "{\"status\":\"false\", \"code\": \"200\"}", parameters.get("correlation_id"), log);
+                responseJson.put("app", parameters.get("app"));
+                responseJson.put("method", parameters.get("method"));
+                responseJson.put("status", "Bad Request");
+                responseJson.put("code", "400");
+                responseJson.put("message","Invalid Password");
+            }
+            try {
+                CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
 
-            proc.close();
-            dbConn.commit();
-
-
-
         } catch (SQLException e) {
+
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        } finally {
+            PostgresConnection.disconnect(set, proc, dbConn, null);
         }
 
     }

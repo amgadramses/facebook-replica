@@ -22,13 +22,10 @@ public class UserMain extends RunnableClasses {
 //      UserCache.userBgSave();
         Receiver c = new Receiver(new RabbitMQConfig("USER"));
         try {
-        while (run) {
-
+            while (run) {
                 Message msg = c.receive();
                 handleMsg(msg.getBody(), msg.getProps().getCorrelationId(), "user", log, pool);
-
-
-        }
+            }
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }

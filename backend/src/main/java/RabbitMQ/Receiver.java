@@ -31,11 +31,8 @@ public class Receiver {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     Message msg = new Message(new String(body, "UTF-8"), properties);
-                    System.out.println("if");
-                    System.out.println("Empty= " + response.isEmpty());
-                    System.out.println("OFFERED= " + response.offer(msg));
-                    System.out.println("Empty= " + response.isEmpty());
-                }
+                    response.offer(msg);
+                    }
             };
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
@@ -73,18 +70,11 @@ public class Receiver {
     }
 
     public Message receive() throws IOException, InterruptedException, TimeoutException {
-        if (corrID == null) {
+        if (corrID == null)
             channel.basicConsume(queueName, true, consumer);
-
-        } else {
-
+        else
             channel.basicConsume(queueName, false, consumer);
-
-        }
-        System.out.println("WAITING TO TAKE1");
-        Message res1 = response.take();
-        System.out.println("AFTER TAKE1");
-        return res1;
+        return response.take();
     }
 
     public Channel getChannel() {
