@@ -26,7 +26,7 @@ public class Notifier implements Callable<String> {
         System.out.println("Not received yet!!!!!!!!!!!!");
         Message response = r.receive();
         System.out.println("Notifier received!!!!!!!!!!! "+response.getBody());
-        r.getChannel().close();
+//        r.getChannel().close();
         r.getConnection().close();
         return response.getBody();
     }

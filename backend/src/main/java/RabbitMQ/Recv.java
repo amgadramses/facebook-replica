@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Recv {
 
-    private final static String QUEUE_NAME = "USER.INQUEUE";
+    private final static String QUEUE_NAME = "hello";
 
     public static void main(String[] argv) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();

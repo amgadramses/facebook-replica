@@ -24,7 +24,7 @@ public class WorkerPool {
     }
 
     public void execute(Runnable r) {
-        System.out.println("WORKER POOL EXEC");
+        //System.out.println("WORKER POOL EXEC");
         executor.execute(r);
     }
 

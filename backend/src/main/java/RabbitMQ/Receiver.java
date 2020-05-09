@@ -6,7 +6,6 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +17,8 @@ public class Receiver {
     Connection connection;
     String corrID = null;
     String queueName;
-
+    Consumer consumer;
+    final BlockingQueue<Message> response = new ArrayBlockingQueue<Message>(1);
 
     public Receiver(RabbitMQConfig config) {
         this.config = config;
@@ -27,10 +27,21 @@ public class Receiver {
             channel = connection.createChannel();
             queueName = config.getQueueName() + ".INQUEUE";
             channel.queueDeclare(queueName, false, false, false, null);
+            consumer = new DefaultConsumer(channel) {
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    Message msg = new Message(new String(body, "UTF-8"), properties);
+                    System.out.println("if");
+                    System.out.println("Empty= " + response.isEmpty());
+                    System.out.println("OFFERED= " + response.offer(msg));
+                    System.out.println("Empty= " + response.isEmpty());
+                }
+            };
         } catch (Exception e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+
     public Receiver(RabbitMQConfig config, String correlationID) {
         this.config = config;
         corrID = correlationID;
@@ -39,28 +50,7 @@ public class Receiver {
             channel = connection.createChannel();
             queueName = config.getQueueName() + ".OUTQUEUE";//SHOULD BE OUTQUEUE
             channel.queueDeclare(queueName, false, false, false, null);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-    public Message receive() throws IOException, InterruptedException {
-        final BlockingQueue<Message> response = new ArrayBlockingQueue<Message>(1);
-
-        if(corrID == null)
-            channel.basicConsume(queueName, true, new DefaultConsumer(channel) {
-
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    Message msg = new Message(new String(body, "UTF-8"), properties);
-                    System.out.println("if");
-
-                    response.offer(msg);
-                }
-            });
-
-        else{
-
-            channel.basicConsume(queueName, false, new DefaultConsumer(channel) {
+            consumer = new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag,
                                            Envelope envelope,
@@ -72,15 +62,29 @@ public class Receiver {
 
                         response.offer(msg);
                         channel.basicAck(envelope.getDeliveryTag(), false);
-                    }
-                    else{
-                        channel.basicNack(envelope.getDeliveryTag(),false, true);
+                    } else {
+                        channel.basicNack(envelope.getDeliveryTag(), false, true);
                     }
                 }
-            });
+            };
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
-        return response.take();
 
+    public Message receive() throws IOException, InterruptedException, TimeoutException {
+        if (corrID == null) {
+            channel.basicConsume(queueName, true, consumer);
+
+        } else {
+
+            channel.basicConsume(queueName, false, consumer);
+
+        }
+        System.out.println("WAITING TO TAKE1");
+        Message res1 = response.take();
+        System.out.println("AFTER TAKE1");
+        return res1;
     }
 
     public Channel getChannel() {

@@ -23,7 +23,7 @@ public class LoginCommand extends Command {
 
     @Override
     protected void execute() {
-        System.out.println("LOGIN EXEC");
+        //System.out.println("LOGIN EXEC");
 
         try{
             String sessionID = URLEncoder.encode(new UID().toString(), "UTF-8");

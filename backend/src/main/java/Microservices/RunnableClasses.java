@@ -34,7 +34,7 @@ public class RunnableClasses {
                     try {
                         Command c = (Command) cmdClass.newInstance();
                         c.init(map);
-                        System.out.println(c.getParameters().keySet());
+                        //System.out.println(c.getParameters().keySet());
                         pool.execute(c);
                     } catch (Exception e) {
                         log.log(Level.SEVERE, e.getMessage(), e);

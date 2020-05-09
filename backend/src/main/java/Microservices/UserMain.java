@@ -21,15 +21,16 @@ public class UserMain extends RunnableClasses {
         CommandsMap.instantiate();
 //      UserCache.userBgSave();
         Receiver c = new Receiver(new RabbitMQConfig("USER"));
+        try {
         while (run) {
-            try {
-                Message msg = c.receive();
-                System.out.println("USERMAIN"+msg.getBody());
-                handleMsg(msg.getBody(), msg.getProps().getCorrelationId(), "user", log, pool);
-            } catch (Exception e) {
-                log.log(Level.SEVERE, e.getMessage(), e);
-            }
 
+                Message msg = c.receive();
+                handleMsg(msg.getBody(), msg.getProps().getCorrelationId(), "user", log, pool);
+
+
+        }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
