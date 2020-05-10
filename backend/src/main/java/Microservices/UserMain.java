@@ -17,7 +17,7 @@ public class UserMain extends RunnableClasses {
     private static boolean run = true;
 
     public static void main(String[] args) {
-        PostgresConnection.initSource();
+       // PostgresConnection.initSource();
         CommandsMap.instantiate();
 //      UserCache.userBgSave();
         Receiver c = new Receiver(new RabbitMQConfig("USER"));
