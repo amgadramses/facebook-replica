@@ -1,8 +1,6 @@
 package CommandDesign;
 
-import CommandDesign.ConcreteCommands.LoginCommand;
-import CommandDesign.ConcreteCommands.ReceiveFriendRequestCommand;
-import CommandDesign.ConcreteCommands.SendFriendRequestCommand;
+import CommandDesign.ConcreteCommands.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -14,7 +12,10 @@ public class CommandsMap {
         cmdMap = new ConcurrentHashMap<>();
         cmdMap.put("login", LoginCommand.class);
         cmdMap.put("sendFriendRequest", SendFriendRequestCommand.class);
-        cmdMap.put("receiveFriendRequest", ReceiveFriendRequestCommand.class);
+        cmdMap.put("retrieveFriendRequests", RetrieveFriendRequestsCommand.class);
+        cmdMap.put("acceptFriendRequest", AcceptFriendRequestCommand.class);
+        cmdMap.put("rejectFriendRequest", RejectFriendRequestCommand.class);
+
 
     }
 

@@ -14,11 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class ReceiveFriendRequestCommand extends Command {
+public class RetrieveFriendRequestsCommand extends Command {
     private final Logger log = Logger.getLogger(LoginCommand.class.getName());
     final String DB_NAME = "SocialDB";
-    final String USERS_COLLECTION = "Users";
-    final String REQUEST_GRAPH = "SendRequestGraph";
     final String REQUEST_COLLECTION = "SendRequest";
     private String user_id = "";
     @Override
@@ -26,9 +24,8 @@ public class ReceiveFriendRequestCommand extends Command {
         user_id = parameters.get("user_id");
         ArangoDB arangoDB = new ArangoDB.Builder().build();
         ArangoDatabase db = arangoDB.db(DB_NAME);
-        ArangoGraph graph = db.graph(REQUEST_GRAPH);
 
-        String query = "FOR doc IN SendRequest FILTER doc.`_to` == @value RETURN doc";
+        String query = "FOR doc IN "+ REQUEST_COLLECTION +" FILTER doc.`_to` == @value RETURN doc";
         Map<String, Object> bindVars = new MapBuilder().put("value", "Users/"+user_id).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 
