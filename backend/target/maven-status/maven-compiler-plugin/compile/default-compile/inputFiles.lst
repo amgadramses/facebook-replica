@@ -1,34 +1,49 @@
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CorrelationID\RPCClient.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\CallBackResult.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CouchBase\CouchBase.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\Light.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\Client.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\LightOffCommand.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\CallBacks.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\Command.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\EchoClientHandler.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\EchoServer.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\LightOnCommand.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\NettyHTTP\HTTPHandler.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\EchoClient.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPatternLoader\CommandClassLoader.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\PublishSubscribe\ReceiveLogs.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\RabbitMQ\Send.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPattern\RemoteControl.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\Futures.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\ScalableQueues\NewTask.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\NettyHTTP\HTTPServerInitializer.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\ScalableQueues\Worker.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\NettyHTTP\JSONHandler.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Main.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\AsyncCallBack.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPatternLoader\Command.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\RabbitMQ\Recv.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CommandPatternLoader\ConcreteCommands\MaxDBThreads.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CouchBase\ZstdDemo.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\CallBack.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\CorrelationID\RPCServer.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\NettyHTTP\NettyHTTPServer.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Redis\Redis.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\Netty\EchoServerHandler.java
-D:\GUC 37-Engineering\Semester 10\CSEN 1073 - Architecture of Massively Scalable Apps\scalable-course-2020\Tutorial 2\backend\src\main\java\PublishSubscribe\EmitLog.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\MyObjectMapper.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\Receiver.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\EchoClient.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPatternLoader\ConcreteCommands\MaxDBThreads.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\CallBacks.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Redis\Redis.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\EchoServer.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\Recv.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\EchoServerHandler.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\PublishSubscribe\ReceiveLogs.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\PublishSubscribe\EmitLog.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\ScalableQueues\Worker.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\NettyHTTP\HTTPHandler.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\ResourcePools\WorkerPool.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\ConcreteCommands\LoginCommand.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\EchoClientHandler.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\LightOffCommand.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\Light.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\ConcreteCommands\SendFriendRequestCommand.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\Client.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Main.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\CommandsHelp.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\Sender.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\CommandsMap.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\RabbitMQConfig.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\Command.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CorrelationID\RPCServer.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CouchBase\CouchBase.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Microservices\UserMain.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\CallBack.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\Send.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Entities\User.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\NettyHTTP\NettyHTTPServer.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\ResourcePools\PostgresConnection.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPatternLoader\CommandClassLoader.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandDesign\Command.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\NettyHTTP\Notifier.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\RemoteControl.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\CallBackResult.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CorrelationID\RPCClient.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\ScalableQueues\NewTask.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Microservices\RunnableClasses.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\AsyncCallBack.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CouchBase\ZstdDemo.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\Netty\Futures.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\NettyHTTP\HTTPServerInitializer.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\CommandPattern\LightOnCommand.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\NettyHTTP\JSONHandler.java
+D:\GUC 37-Engineering\Semester 10\facebook-replica\backend\src\main\java\RabbitMQ\Message.java
