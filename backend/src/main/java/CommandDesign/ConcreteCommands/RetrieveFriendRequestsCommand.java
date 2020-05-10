@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class RetrieveFriendRequestsCommand extends Command {
-    private final Logger log = Logger.getLogger(LoginCommand.class.getName());
+    private final Logger log = Logger.getLogger(RetrieveFriendRequestsCommand.class.getName());
     final String DB_NAME = "SocialDB";
-    final String REQUEST_COLLECTION = "SendRequest";
+    final String REQUEST_COLLECTION = "FriendRequests";
     private String user_id = "";
     @Override
     protected void execute() {

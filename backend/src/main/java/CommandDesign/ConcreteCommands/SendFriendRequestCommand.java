@@ -14,11 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SendFriendRequestCommand extends Command {
-    private final Logger log = Logger.getLogger(LoginCommand.class.getName());
+    private final Logger log = Logger.getLogger(SendFriendRequestCommand.class.getName());
     final String DB_NAME = "SocialDB";
     final String USERS_COLLECTION = "Users";
-    final String REQUEST_GRAPH = "SendRequestGraph";
-    final String REQUEST_COLLECTION = "SendRequest";
+    final String REQUEST_GRAPH = "SocialDBGraph";
+    final String REQUEST_COLLECTION = "FriendRequests";
     private String senderID = "";
     private String receiverID = "";
     private String requestID;
@@ -31,6 +31,7 @@ public class SendFriendRequestCommand extends Command {
         receiverID = USERS_COLLECTION+"/"+ receiver;
         senderID = USERS_COLLECTION+"/"+sender;
         requestID = (int) (sender * receiver + (Math.pow((Math.abs(sender-receiver) - 1),2)/4))+""; // Unordered Pairing Function
+
         ArangoDB arangoDB = new ArangoDB.Builder().build();
         ArangoDatabase db = arangoDB.db(DB_NAME);
         ArangoGraph graph = db.graph(REQUEST_GRAPH);

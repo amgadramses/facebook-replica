@@ -15,6 +15,7 @@ public class CommandsMap {
         cmdMap.put("retrieveFriendRequests", RetrieveFriendRequestsCommand.class);
         cmdMap.put("acceptFriendRequest", AcceptFriendRequestCommand.class);
         cmdMap.put("rejectFriendRequest", RejectFriendRequestCommand.class);
+        cmdMap.put("followOrUnfollow", FollowOrUnfollowCommand.class);
 
 
     }
