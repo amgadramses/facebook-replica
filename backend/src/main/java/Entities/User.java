@@ -9,10 +9,7 @@ public class User {
     private Timestamp created_at;
     private boolean is_active;
     private Date birth_date;
-    private String sessionID;
-    public void setSessionID(String sessionID) {
-        this.sessionID = sessionID;
-    }
+
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }

@@ -18,6 +18,7 @@ public class CommandsMap {
         cmdMap.put("followOrUnfollow", FollowOrUnfollowCommand.class);
         cmdMap.put("deactivate", DeactivateCommand.class);
         cmdMap.put("register", RegisterCommand.class);
+        cmdMap.put("edit_user",EditUserCommand.class);
     }
 
     public static Class<?> queryClass(String cmd) {

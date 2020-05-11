@@ -28,8 +28,6 @@ public class LoginCommand extends Command {
         //System.out.println("LOGIN EXEC");
 
         try {
-            String sessionID = URLEncoder.encode(new UID().toString(), "UTF-8");
-            String cleaned_session = sessionID.replace("%", "\\%");
             System.out.println("db" + PostgresConnection.getDataSource());
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(false);
@@ -39,7 +37,7 @@ public class LoginCommand extends Command {
 
 
             proc.registerOutParameter(1, Types.VARCHAR);
-            proc.setString(2, parameters.get("email"));
+            proc.setString(2, parameters.get("email").toLowerCase());
 
             proc.execute();
 
@@ -57,11 +55,11 @@ public class LoginCommand extends Command {
             boolean authenticated = enc_password_db.equals(encrypted_password);
 
             if (authenticated) {
-                proc = dbConn.prepareCall("{? = call login(?,?)}");
+                proc = dbConn.prepareCall("{? = call login(?)}");
                 proc.setPoolable(true);
                 proc.registerOutParameter(1, Types.OTHER);
                 proc.setString(2, parameters.get("email"));
-                proc.setString(3, cleaned_session);
+//              proc.setString(3, cleaned_session);
                 proc.execute();
                 set = (ResultSet) proc.getObject(1);
                 proc.close();
@@ -85,7 +83,7 @@ public class LoginCommand extends Command {
                 user.setIs_active(is_active);
                 user.setPhone(phone);
                 user.setBirth_date(birth_date);
-                user.setSessionID(sessionID);
+//                user.setSessionID(sessionID);
 
                 responseJson.put("app", parameters.get("app"));
                 responseJson.put("method", parameters.get("method"));
@@ -93,13 +91,12 @@ public class LoginCommand extends Command {
                 responseJson.put("code", "200");
                 responseJson.set("user", nf.pojoNode(user));
 
-            }
-            else{
+            } else {
                 responseJson.put("app", parameters.get("app"));
                 responseJson.put("method", parameters.get("method"));
                 responseJson.put("status", "Bad Request");
                 responseJson.put("code", "400");
-                responseJson.put("message","Invalid Password");
+                responseJson.put("message", "Invalid Password");
             }
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
@@ -109,8 +106,6 @@ public class LoginCommand extends Command {
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } finally {
             PostgresConnection.disconnect(set, proc, dbConn, null);

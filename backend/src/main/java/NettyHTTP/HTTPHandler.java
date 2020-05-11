@@ -94,7 +94,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
             status = new HttpResponseStatus(Integer.parseInt((String) json
                     .get("code")), (String) json.get("message"));
 
-        boolean keepAlive = HttpHeaders.isKeepAlive(request);
+        boolean keepAlive = HttpUtil.isKeepAlive(request);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,
                 status, Unpooled.copiedBuffer(responseBody, CharsetUtil.UTF_8));
 
