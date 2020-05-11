@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

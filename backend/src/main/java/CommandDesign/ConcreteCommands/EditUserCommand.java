@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -17,6 +18,8 @@ public class EditUserCommand extends Command {
     @Override
     protected void execute() {
         try {
+
+            System.out.println(UserCache.userCache.get("user"));
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(true);
             proc = dbConn.prepareCall("{ call edit_user_detail(?,?,?) }");

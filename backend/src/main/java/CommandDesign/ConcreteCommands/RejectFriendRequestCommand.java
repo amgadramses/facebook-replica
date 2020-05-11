@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
@@ -39,6 +40,7 @@ public class RejectFriendRequestCommand extends Command {
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
             responseJson.put("Message", requestSenderID+"'s Friend request is rejected!");
+            UserCache.userCache.del("retrieveFriendRequests" + ":" + user_id);
 
             CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 

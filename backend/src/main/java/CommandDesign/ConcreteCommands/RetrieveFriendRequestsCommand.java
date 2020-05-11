@@ -3,6 +3,7 @@ package CommandDesign.ConcreteCommands;
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.FriendRequests;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
@@ -45,6 +46,7 @@ public class RetrieveFriendRequestsCommand extends Command {
             responseJson.set("friendRequests", nf.pojoNode(requests));
 
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

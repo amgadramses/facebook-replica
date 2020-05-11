@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,6 +30,8 @@ public class RemoveWorkCommand extends Command {
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
             responseJson.put("message", "Work removed successfully.");
+            UserCache.userCache.del("get_works" + ":" + parameters.get("user_id"));
+
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {

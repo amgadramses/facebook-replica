@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseDocument;
@@ -52,6 +53,8 @@ public class SendFriendRequestCommand extends Command {
                 responseJson.put("from", senderID);
                 responseJson.put("to", receiverID);
                 responseJson.put("requestStatus", "pending");
+                UserCache.userCache.del("getFriends" + ":" + sender);
+
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {

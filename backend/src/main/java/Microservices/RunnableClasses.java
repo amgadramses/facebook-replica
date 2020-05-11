@@ -1,7 +1,11 @@
 package Microservices;
 
 import CommandDesign.Command;
+import CommandDesign.CommandsHelp;
 import CommandDesign.CommandsMap;
+import RabbitMQ.RabbitMQConfig;
+import RabbitMQ.Sender;
+import Redis.UserCache;
 import ResourcePools.WorkerPool;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,13 +35,20 @@ public class RunnableClasses {
                     log.log(Level.SEVERE,
                             "Invalid Request. Class \"" + map.get("method") + "\" Not Found");
                 } else {
-                    try {
-                        Command c = (Command) cmdClass.newInstance();
-                        c.init(map);
-                        //System.out.println(c.getParameters().keySet());
-                        pool.execute(c);
-                    } catch (Exception e) {
-                        log.log(Level.SEVERE, e.getMessage(), e);
+                    String cacheEntry = UserCache.userCache.get(map.get("method") +":"+ UserCache.userCache.get("user"));
+                    if (cacheEntry != null) {
+                        System.out.println("CACHE HIT");
+                        CommandsHelp.submit(map.get("app"), cacheEntry, map.get("correlation_id"), log);
+                    } else {
+                        System.out.println("CACHE MISS");
+                        try {
+                            Command c = (Command) cmdClass.newInstance();
+                            c.init(map);
+                            //System.out.println(c.getParameters().keySet());
+                            pool.execute(c);
+                        } catch (Exception e) {
+                            log.log(Level.SEVERE, e.getMessage(), e);
+                        }
                     }
                 }
             }

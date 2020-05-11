@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
@@ -28,14 +29,14 @@ public class AcceptFriendRequestCommand extends Command {
         user_id = parameters.get("user_id");
         requestSenderID = parameters.get("requestSenderID");
         requestID = parameters.get("requestID");
-        String modified_user_id = USERS_COLLECTION+"/"+user_id;
+        String modified_user_id = USERS_COLLECTION + "/" + user_id;
 
         arangoDB = ArangoDBConnectionPool.getDriver();
         ArangoDatabase db = arangoDB.db(DB_NAME);
         ArangoGraph graph = db.graph(DB_GRAPH);
         ArangoEdgeCollection friendsCollection = graph.edgeCollection(FRIENDS_COLLECTION);
 
-        String removeQuery = "FOR doc IN "+ REQUEST_COLLECTION  +" FILTER doc.`_key` == @value REMOVE doc in "+REQUEST_COLLECTION;
+        String removeQuery = "FOR doc IN " + REQUEST_COLLECTION + " FILTER doc.`_key` == @value REMOVE doc in " + REQUEST_COLLECTION;
         Map<String, Object> bindVars = new MapBuilder().put("value", requestID).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(removeQuery, bindVars, null, BaseEdgeDocument.class);
 
@@ -43,17 +44,20 @@ public class AcceptFriendRequestCommand extends Command {
         friendsRelation.setKey(requestID);
         friendsCollection.insertEdge(friendsRelation);
 
-        try{
-        responseJson.put("app", parameters.get("app"));
-        responseJson.put("method", parameters.get("method"));
-        responseJson.put("status", "ok");
-        responseJson.put("code", "200");
-        responseJson.put("Message", "You became friends with "+ requestSenderID);
+        try {
+            UserCache.userCache.del("retrieveFriendRequests" + ":" + user_id);
+            UserCache.userCache.del("getFriends" + ":" + user_id);
 
-        CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
+            responseJson.put("app", parameters.get("app"));
+            responseJson.put("method", parameters.get("method"));
+            responseJson.put("status", "ok");
+            responseJson.put("code", "200");
+            responseJson.put("Message", "You became friends with " + requestSenderID);
 
-    } catch (ArangoDBException | JsonProcessingException e) {
-        log.log(Level.SEVERE, e.getMessage(), e);
-    }
+            CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
+
+        } catch (ArangoDBException | JsonProcessingException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 }

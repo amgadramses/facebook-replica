@@ -4,7 +4,9 @@ import CommandDesign.CommandsMap;
 import RabbitMQ.Message;
 import RabbitMQ.RabbitMQConfig;
 import RabbitMQ.Receiver;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
+import ResourcePools.JedisConnectionPool;
 import ResourcePools.PostgresConnection;
 import ResourcePools.WorkerPool;
 
@@ -20,8 +22,9 @@ public class UserMain extends RunnableClasses {
     public static void main(String[] args) {
         PostgresConnection.initSource();
         ArangoDBConnectionPool.initSource();
+        JedisConnectionPool.initSource();
         CommandsMap.instantiate();
-//      UserCache.userBgSave();
+        UserCache.userBgSave();
         Receiver c = new Receiver(new RabbitMQConfig("USER"));
         try {
             while (run) {

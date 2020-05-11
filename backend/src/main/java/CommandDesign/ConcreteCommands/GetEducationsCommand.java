@@ -3,6 +3,7 @@ package CommandDesign.ConcreteCommands;
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.Education;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -46,6 +47,7 @@ public class GetEducationsCommand extends Command {
             proc.close();
             responseJson.set("Educations", educations);
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+parameters.get("user_id"), mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"),
                         mapper.writeValueAsString(responseJson),
                         parameters.get("correlation_id"), log);

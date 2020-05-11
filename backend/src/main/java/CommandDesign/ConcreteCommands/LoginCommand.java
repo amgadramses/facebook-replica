@@ -3,6 +3,7 @@ package CommandDesign.ConcreteCommands;
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.User;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -59,7 +60,6 @@ public class LoginCommand extends Command {
                 proc.setPoolable(true);
                 proc.registerOutParameter(1, Types.OTHER);
                 proc.setString(2, parameters.get("email"));
-//              proc.setString(3, cleaned_session);
                 proc.execute();
                 set = (ResultSet) proc.getObject(1);
                 proc.close();
@@ -76,6 +76,7 @@ public class LoginCommand extends Command {
                     phone = set.getString("phone");
                     birth_date = set.getDate("birth_date");
                 }
+                user.setUser_id(user_id);
                 user.setEmail(email);
                 user.setFirst_name(first_name);
                 user.setLast_name(last_name);
@@ -83,13 +84,17 @@ public class LoginCommand extends Command {
                 user.setIs_active(is_active);
                 user.setPhone(phone);
                 user.setBirth_date(birth_date);
-//                user.setSessionID(sessionID);
+
 
                 responseJson.put("app", parameters.get("app"));
                 responseJson.put("method", parameters.get("method"));
                 responseJson.put("status", "ok");
                 responseJson.put("code", "200");
                 responseJson.set("user", nf.pojoNode(user));
+
+//                toBeCached = ObjectToMap(user);
+
+                UserCache.userCache.set("user", user_id + "");
 
             } else {
                 responseJson.put("app", parameters.get("app"));

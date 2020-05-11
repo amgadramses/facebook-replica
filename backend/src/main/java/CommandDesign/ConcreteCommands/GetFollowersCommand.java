@@ -4,6 +4,7 @@ import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.Followers;
 import Entities.FriendRequests;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.ArangoCursor;
 import com.arangodb.ArangoDB;
@@ -46,6 +47,7 @@ public class GetFollowersCommand extends Command {
             responseJson.set("friendRequests", nf.pojoNode(followers));
 
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

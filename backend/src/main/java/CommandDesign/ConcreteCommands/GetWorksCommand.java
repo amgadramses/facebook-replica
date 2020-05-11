@@ -3,6 +3,7 @@ package CommandDesign.ConcreteCommands;
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.Work;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -46,6 +47,7 @@ public class GetWorksCommand extends Command {
             proc.close();
             responseJson.set("Works", works);
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+parameters.get("user_id"), mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"),
                         mapper.writeValueAsString(responseJson),
                         parameters.get("correlation_id"), log);

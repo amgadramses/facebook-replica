@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -35,6 +36,7 @@ public class AddWorkCommand extends Command {
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
             responseJson.put("message", "Successfully added a new work record.");
+            UserCache.userCache.del("get_works" + ":" + parameters.get("user_id"));
 
         }
         catch (SQLException e) {

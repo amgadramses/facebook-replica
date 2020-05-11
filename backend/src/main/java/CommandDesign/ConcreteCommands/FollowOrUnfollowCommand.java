@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
@@ -47,6 +48,9 @@ public class FollowOrUnfollowCommand extends Command {
                 responseJson.put("status", "ok");
                 responseJson.put("code", "200");
                 responseJson.put("message", "You are now following "+followed_id);
+                UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFollowers" + ":" + parameters.get("user_id"));
+
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {
