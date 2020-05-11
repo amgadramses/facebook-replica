@@ -19,6 +19,13 @@ public class CommandsMap {
         cmdMap.put("deactivate", DeactivateCommand.class);
         cmdMap.put("register", RegisterCommand.class);
         cmdMap.put("edit_user",EditUserCommand.class);
+        cmdMap.put("add_work",AddWorkCommand.class);
+        cmdMap.put("add_education",AddEducationCommand.class);
+        cmdMap.put("remove_work",RemoveWorkCommand.class);
+        cmdMap.put("remove_education",RemoveEducationCommand.class);
+        cmdMap.put("get_educations",GetEducationsCommand.class);
+        cmdMap.put("get_works",GetWorksCommand.class);
+
     }
 
     public static Class<?> queryClass(String cmd) {
