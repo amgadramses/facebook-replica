@@ -11,6 +11,7 @@ public class CommandsMap {
     public static void instantiate() {
         cmdMap = new ConcurrentHashMap<>();
         cmdMap.put("login", LoginCommand.class);
+
         cmdMap.put("sendFriendRequest", SendFriendRequestCommand.class);
         cmdMap.put("retrieveFriendRequests", RetrieveFriendRequestsCommand.class);
         cmdMap.put("acceptFriendRequest", AcceptFriendRequestCommand.class);
@@ -31,6 +32,7 @@ public class CommandsMap {
         cmdMap.put("blockOrUnblock", BlockOrUnblockCommand.class);
         cmdMap.put("getBlockedUsers", GetBlockedUsersCommand.class);
         cmdMap.put("reportUser", ReportUserCommand.class);
+        cmdMap.put("uploadProfilePicture",UploadProfilePictureCommand.class);
 
     }
 
