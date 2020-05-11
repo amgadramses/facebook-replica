@@ -16,8 +16,8 @@ public class CommandsMap {
         cmdMap.put("acceptFriendRequest", AcceptFriendRequestCommand.class);
         cmdMap.put("rejectFriendRequest", RejectFriendRequestCommand.class);
         cmdMap.put("followOrUnfollow", FollowOrUnfollowCommand.class);
-
-
+        cmdMap.put("deactivate", DeactivateCommand.class);
+        cmdMap.put("register", RegisterCommand.class);
     }
 
     public static Class<?> queryClass(String cmd) {
