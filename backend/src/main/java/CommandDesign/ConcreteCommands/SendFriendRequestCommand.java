@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseDocument;
 import com.arangodb.entity.BaseEdgeDocument;
@@ -32,7 +33,7 @@ public class SendFriendRequestCommand extends Command {
         senderID = USERS_COLLECTION+"/"+sender;
         requestID = (int) (sender * receiver + (Math.pow((Math.abs(sender-receiver) - 1),2)/4))+""; // Unordered Pairing Function
 
-        ArangoDB arangoDB = new ArangoDB.Builder().build();
+        arangoDB = ArangoDBConnectionPool.getDriver();
         ArangoDatabase db = arangoDB.db(DB_NAME);
         ArangoGraph graph = db.graph(REQUEST_GRAPH);
         ArangoEdgeCollection collection = graph.edgeCollection(REQUEST_COLLECTION);

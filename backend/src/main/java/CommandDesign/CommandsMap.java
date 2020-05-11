@@ -25,6 +25,12 @@ public class CommandsMap {
         cmdMap.put("remove_education",RemoveEducationCommand.class);
         cmdMap.put("get_educations",GetEducationsCommand.class);
         cmdMap.put("get_works",GetWorksCommand.class);
+        cmdMap.put("getFriends", GetFriendsCommand.class);
+        cmdMap.put("getFollowers", GetFollowersCommand.class);
+        cmdMap.put("getFollowing", GetFollowingCommand.class);
+        cmdMap.put("blockOrUnblock", BlockOrUnblockCommand.class);
+        cmdMap.put("getBlockedUsers", GetBlockedUsersCommand.class);
+        cmdMap.put("reportUser", ReportUserCommand.class);
 
     }
 

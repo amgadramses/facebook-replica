@@ -1,5 +1,6 @@
 package CommandDesign;
 
+import com.arangodb.ArangoDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,6 +18,7 @@ public abstract class Command implements Runnable {
 
     protected Map<String, String> parameters;
     protected Connection dbConn;
+    protected ArangoDB arangoDB;
     protected CallableStatement proc;
     protected ResultSet set;
     protected JsonNodeFactory nf = JsonNodeFactory.instance;

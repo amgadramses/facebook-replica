@@ -2,6 +2,7 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
 import com.arangodb.util.MapBuilder;
@@ -12,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RejectFriendRequestCommand extends Command {
-
     private final Logger log = Logger.getLogger(RejectFriendRequestCommand.class.getName());
     final String DB_NAME = "SocialDB";
     String requestID;
@@ -26,7 +26,7 @@ public class RejectFriendRequestCommand extends Command {
         requestSenderID = parameters.get("requestSenderID");
         requestID = parameters.get("requestID");
 
-        ArangoDB arangoDB = new ArangoDB.Builder().build();
+        arangoDB = ArangoDBConnectionPool.getDriver();
         ArangoDatabase db = arangoDB.db(DB_NAME);
 
         String removeQuery = "FOR doc IN "+ REQUEST_COLLECTION  +" FILTER doc.`_key` == @value REMOVE doc in "+REQUEST_COLLECTION;
