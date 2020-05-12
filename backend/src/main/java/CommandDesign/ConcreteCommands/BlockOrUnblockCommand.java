@@ -45,6 +45,10 @@ public class BlockOrUnblockCommand extends Command {
                 responseJson.put("status", "ok");
                 responseJson.put("code", "200");
                 responseJson.put("message", "You have blocked "+blocked_id);
+                UserCache.userCache.del("getBlockedUsers" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFriends" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFollowers" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {

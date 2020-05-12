@@ -60,6 +60,7 @@ public class RetrieveFriendRequestsCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("message","There are no new friend requests");
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

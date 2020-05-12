@@ -59,6 +59,7 @@ public class GetFollowingCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("message","You are not following anyone");
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
