@@ -4,6 +4,14 @@ import org.apache.commons.dbcp2.*;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.net.URI;
 import java.nio.file.Files;
@@ -53,7 +61,7 @@ public class PostgresConnection {
             }
         }
 
-        if(query != null){
+        if (query != null) {
             try {
                 query.close();
             } catch (SQLException e) {
@@ -102,10 +110,11 @@ public class PostgresConnection {
                 DB_NAME = dbUri.getPath().replace("/", "");
                 DB_URL = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
 
-            } catch (Exception e1){
+            } catch (Exception e1) {
                 try {
-                    readConfFile();
-                } catch ( Exception e2 ) {
+//                    readConfFile();
+                    readJsonConfFile();
+                } catch (Exception e2) {
                     e2.printStackTrace();
                 }
                 System.out.println("Used Config File For DB");
@@ -144,6 +153,31 @@ public class PostgresConnection {
         }
     }
 
+    public static void readJsonConfFile() throws Exception {
+        JSONParser parser = new JSONParser();
+        JSONObject o = (JSONObject) parser.parse(new FileReader("src/main/java/ResourcePools/Postgresconf.json"));
+
+
+            JSONObject DBConf = (JSONObject) o;
+
+            String user = (String) DBConf.get("user");
+            String password = (String) DBConf.get("password");
+            String host = (String) DBConf.get("host");
+            String port = (String) DBConf.get("port");
+            String dbName = (String) DBConf.get("database");
+
+            setDBUser(user);
+            setDBPassword(password);
+            setDBHost(host);
+            setDBPort(port);
+            setDBName(dbName);
+
+        if (!formatURL()) {
+            throw new Exception("Wrong Format in Postgres.conf");
+
+        }
+    }
+
     public static void readConfFile() throws Exception {
 //        System.getProperty("user.dir") +
         String file = "src/main/java/ResourcePools/Postgres.conf";
@@ -154,46 +188,46 @@ public class PostgresConnection {
         lines = stream.filter(
                 line -> !line.startsWith("#")).collect(Collectors.toList());
 
-//        for (int i = 0; i < lines.size(); i++) {
-//            if (lines.get(i).startsWith("user")) {
-//                matcher = pattern.matcher(lines.get(i));
-//                if (matcher.find())
-//                    setDBUser(matcher.group(1));
-//                else
-//                    throw new Exception("empty user in Postgres.conf");
-//            }
-//            if (lines.get(i).startsWith("database")) {
-//                matcher = pattern.matcher(lines.get(i));
-//                if (matcher.find())
-//                    setDBName(matcher.group(1));
-//                else
-//                    throw new Exception("empty database name in Postgres.conf");
-//            }
-//            if (lines.get(i).startsWith("pass")) {
-//                matcher = pattern.matcher(lines.get(i));
-//                matcher.find();
-//                setDBPassword(matcher.group(1));
-//            }
-//            if (lines.get(i).startsWith("host")) {
-//                matcher = pattern.matcher(lines.get(i));
-//                if (matcher.find())
-//                    setDBHost(matcher.group(1));
-//                else
-//                    setDBHost("localhost");
-//            }
-//            if (lines.get(i).startsWith("port")) {
-//                matcher = pattern.matcher(lines.get(i));
-//                if (matcher.find())
-//                    setDBPort(matcher.group(1));
-//                else
-//                    setDBPort("5432");
-//            }
-//        }
-        setDBUser("postgres");
-        setDBPassword("jesus");
-        setDBHost("localhost");
-        setDBPort("5432");
-        setDBName("postgres");
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).startsWith("user")) {
+                matcher = pattern.matcher(lines.get(i));
+                if (matcher.find())
+                    setDBUser(matcher.group(1));
+                else
+                    throw new Exception("empty user in Postgres.conf");
+            }
+            if (lines.get(i).startsWith("database")) {
+                matcher = pattern.matcher(lines.get(i));
+                if (matcher.find())
+                    setDBName(matcher.group(1));
+                else
+                    throw new Exception("empty database name in Postgres.conf");
+            }
+            if (lines.get(i).startsWith("pass")) {
+                matcher = pattern.matcher(lines.get(i));
+                matcher.find();
+                setDBPassword(matcher.group(1));
+            }
+            if (lines.get(i).startsWith("host")) {
+                matcher = pattern.matcher(lines.get(i));
+                if (matcher.find())
+                    setDBHost(matcher.group(1));
+                else
+                    setDBHost("localhost");
+            }
+            if (lines.get(i).startsWith("port")) {
+                matcher = pattern.matcher(lines.get(i));
+                if (matcher.find())
+                    setDBPort(matcher.group(1));
+                else
+                    setDBPort("5432");
+            }
+        }
+//        setDBUser("postgres");
+//        setDBPassword("jesus");
+//        setDBHost("localhost");
+//        setDBPort("5432");
+//        setDBName("postgres");
         if (!formatURL()) {
             throw new Exception("Wrong Format in Postgres.conf");
 
@@ -210,6 +244,7 @@ public class PostgresConnection {
     public static PoolingDataSource<PoolableConnection> getDataSource() {
         return dataSource;
     }
+
     public static void setDBUser(String name) {
         DB_USERNAME = name;
     }

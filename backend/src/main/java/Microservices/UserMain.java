@@ -20,6 +20,7 @@ public class UserMain extends RunnableClasses {
     private static boolean run = true;
 
     public static void main(String[] args) {
+        System.out.println("User application is running");
         PostgresConnection.initSource();
         ArangoDBConnectionPool.initSource();
         JedisConnectionPool.initSource();

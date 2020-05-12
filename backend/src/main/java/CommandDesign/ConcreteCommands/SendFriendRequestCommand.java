@@ -29,7 +29,7 @@ public class SendFriendRequestCommand extends Command {
     @Override
     protected void execute(){
         int receiver = Integer.parseInt(parameters.get("receiver_id"));
-        int sender = Integer.parseInt(parameters.get("sender_id"));
+        int sender = Integer.parseInt(parameters.get("user_id"));
         receiverID = USERS_COLLECTION+"/"+ receiver;
         senderID = USERS_COLLECTION+"/"+sender;
         requestID = (int) (sender * receiver + (Math.pow((Math.abs(sender-receiver) - 1),2)/4))+""; // Unordered Pairing Function

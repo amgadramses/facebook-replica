@@ -94,7 +94,7 @@ public class LoginCommand extends Command {
 
 //                toBeCached = ObjectToMap(user);
 
-                UserCache.userCache.set("user", user_id + "");
+//                UserCache.userCache.set("user", user_id + "");
 
             } else {
                 responseJson.put("app", parameters.get("app"));

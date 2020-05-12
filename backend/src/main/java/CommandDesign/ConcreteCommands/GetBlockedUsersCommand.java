@@ -43,8 +43,10 @@ public class GetBlockedUsersCommand extends Command {
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
             responseJson.set("blockedUsers", nf.pojoNode(blockedUsers));
+
             try {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
+
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -57,7 +59,10 @@ public class GetBlockedUsersCommand extends Command {
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
             responseJson.put("message","You are not blocking anyone");
+
             try {
+                UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
+
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
