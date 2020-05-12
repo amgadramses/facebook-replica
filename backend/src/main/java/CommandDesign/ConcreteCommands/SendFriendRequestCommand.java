@@ -53,8 +53,8 @@ public class SendFriendRequestCommand extends Command {
                 responseJson.put("from", senderID);
                 responseJson.put("to", receiverID);
                 responseJson.put("requestStatus", "pending");
-                UserCache.userCache.del("getFriends" + ":" + sender);
 
+                UserCache.userCache.del("retrieveFriendRequests"+":"+receiver);
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {

@@ -49,6 +49,11 @@ public class BlockOrUnblockCommand extends Command {
                 UserCache.userCache.del("getFriends" + ":" + parameters.get("user_id"));
                 UserCache.userCache.del("getFollowers" + ":" + parameters.get("user_id"));
                 UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
+
+                //UserCache.userCache.del("getBlockedUsers" + ":" + blocked_id);
+                UserCache.userCache.del("getFriends" + ":" + blocked_id);
+                UserCache.userCache.del("getFollowers" + ":" + blocked_id);
+                UserCache.userCache.del("getFollowing" + ":" + blocked_id);
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {
@@ -70,6 +75,10 @@ public class BlockOrUnblockCommand extends Command {
                 UserCache.userCache.del("getFriends" + ":" + parameters.get("user_id"));
                 UserCache.userCache.del("getFollowers" + ":" + parameters.get("user_id"));
                 UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
+
+                UserCache.userCache.del("getFriends" + ":" + blocked_id);
+                UserCache.userCache.del("getFollowers" + ":" + blocked_id);
+                UserCache.userCache.del("getFollowing" + ":" + blocked_id);
 
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 

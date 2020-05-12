@@ -49,6 +49,7 @@ public class FollowOrUnfollowCommand extends Command {
                 responseJson.put("code", "200");
                 responseJson.put("message", "You are now following "+followed_id);
                 UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFollowers" + ":" + followed_id);
 
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
@@ -68,6 +69,7 @@ public class FollowOrUnfollowCommand extends Command {
                 responseJson.put("code", "200");
                 responseJson.put("message", "You have successfully unfollowed "+followed_id);
                 UserCache.userCache.del("getFollowing" + ":" + parameters.get("user_id"));
+                UserCache.userCache.del("getFollowers" + ":" + followed_id);
 
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 

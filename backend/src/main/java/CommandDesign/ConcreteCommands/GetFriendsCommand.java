@@ -21,7 +21,8 @@ public class GetFriendsCommand extends Command {
     private final Logger log = Logger.getLogger(GetFriendsCommand.class.getName());
     final String USERS_COLLECTION = "Users";
     final String DB_NAME = "SocialDB";
-    final String REQUEST_COLLECTION = "Friends";
+    final String FRIENDS_COLLECTION = "Friends";
+    final String BLOCKS_COLLECTION = "Blocks";
     private String user_id = "";
     @Override
     protected void execute() {
@@ -30,7 +31,7 @@ public class GetFriendsCommand extends Command {
         ArangoDatabase db = arangoDB.db(DB_NAME);
         String modified_user_id = USERS_COLLECTION+"/"+user_id;
 
-        String query = "LET Q1 = (FOR block IN Blocks FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) FOR friend IN Friends FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend";
+        String query = "LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) FOR friend IN "+FRIENDS_COLLECTION+ " FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend";
         Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 

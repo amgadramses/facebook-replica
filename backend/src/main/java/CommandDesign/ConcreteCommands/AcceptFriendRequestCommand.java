@@ -47,6 +47,7 @@ public class AcceptFriendRequestCommand extends Command {
         try {
             UserCache.userCache.del("retrieveFriendRequests" + ":" + user_id);
             UserCache.userCache.del("getFriends" + ":" + user_id);
+            UserCache.userCache.del("getFriends" + ":" + requestSenderID);
 
             responseJson.put("app", parameters.get("app"));
             responseJson.put("method", parameters.get("method"));

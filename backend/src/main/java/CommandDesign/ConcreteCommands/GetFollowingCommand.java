@@ -20,7 +20,8 @@ public class GetFollowingCommand extends Command {
     private final Logger log = Logger.getLogger(GetFollowingCommand.class.getName());
     final String USERS_COLLECTION = "Users";
     final String DB_NAME = "SocialDB";
-    final String REQUEST_COLLECTION = "Follows";
+    final String FOLLOWS_COLLECTION = "Follows";
+    final String BLOCKS_COLLECTION = "Blocks";
     private String user_id = "";
 
     @Override
@@ -29,7 +30,7 @@ public class GetFollowingCommand extends Command {
         arangoDB = ArangoDBConnectionPool.getDriver();
         ArangoDatabase db = arangoDB.db(DB_NAME);
         String modified_user_id = USERS_COLLECTION+"/"+user_id;
-        String query = "FOR doc IN " + REQUEST_COLLECTION + " FILTER doc.`_from` == @value RETURN doc";
+        String query = "LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) FOR friend IN "+FOLLOWS_COLLECTION+ " FILTER friend.`_from` == @value  && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend";
         Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 
