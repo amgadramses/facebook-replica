@@ -21,7 +21,7 @@ public class UserMain extends RunnableClasses {
 
     public static void main(String[] args) {
         System.out.println("User application is running");
-        //PostgresConnection.initSource();
+        PostgresConnection.initSource();
         ArangoDBConnectionPool.initSource();
         JedisConnectionPool.initSource();
         CommandsMap.instantiate();

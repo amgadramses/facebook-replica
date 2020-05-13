@@ -3,14 +3,9 @@ package CommandDesign.ConcreteCommands;
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
 import Entities.User;
-import Redis.UserCache;
 import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.net.URLEncoder;
-import java.rmi.server.UID;
 import java.sql.*;
 import java.util.logging.Logger;
 
