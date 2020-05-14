@@ -32,6 +32,7 @@ public class CommandsMap {
         cmdMap.put("getBlockedUsers", GetBlockedUsersCommand.class);
         cmdMap.put("reportUser", ReportUserCommand.class);
         cmdMap.put("uploadProfilePicture",UploadProfilePictureCommand.class);
+        cmdMap.put("uploadCoverPicture",UploadCoverPictureCommand.class);
         cmdMap.put("showProfile",ShowProfile.class);
         cmdMap.put("deleteAccount", DeleteAccountCommand.class);
     }

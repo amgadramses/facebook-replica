@@ -14,10 +14,11 @@ import java.util.Base64;
 import java.util.logging.Logger;
 
 
-public class UploadProfilePictureCommand extends Command {
-    private final Logger log = Logger.getLogger(UploadProfilePictureCommand.class.getName());
+public class UploadCoverPictureCommand extends Command {
+    private final Logger log = Logger.getLogger(UploadCoverPictureCommand.class.getName());
     private String user_id;
     private String base64Img;
+    final String IP_ADDRESS = "http://192.168.1.102:9000"; //Replace with your IP address+ port 9000
     @Override
     protected void execute() {
         user_id = parameters.get("user_id");
@@ -28,7 +29,7 @@ public class UploadProfilePictureCommand extends Command {
 
 
         try {
-            minioClient = new MinioClient("http://192.168.1.102:9000", "minioadmin", "minioadmin");
+            minioClient = new MinioClient(IP_ADDRESS, "minioadmin", "minioadmin");
         } catch (InvalidEndpointException e) {
             e.printStackTrace();
         } catch (InvalidPortException e) {
@@ -36,9 +37,9 @@ public class UploadProfilePictureCommand extends Command {
         }
         if(minioClient != null){
             try {
-                boolean bucketExists = minioClient.bucketExists("profilepicturebucket"+user_id);
+                boolean bucketExists = minioClient.bucketExists("coverpicturebucket"+user_id);
                 if(!bucketExists){
-                    minioClient.makeBucket("profilepicturebucket"+user_id);
+                    minioClient.makeBucket("coverpicturebucket"+user_id);
                 }
 
                 String outputFileName = user_id+".png";
@@ -51,14 +52,14 @@ public class UploadProfilePictureCommand extends Command {
                 }
 
                 String unique_id = UUID.randomUUID().toString();
-                minioClient.putObject("profilepicturebucket"+user_id, unique_id, outputFileName, null);
+                minioClient.putObject("coverpicturebucket"+user_id, unique_id, outputFileName, null);
                 imageFile.delete();
                 responseJson.put("app", parameters.get("app"));
                 responseJson.put("method", parameters.get("method"));
                 responseJson.put("status", "ok");
                 responseJson.put("code", "200");
-                responseJson.put("message", "Your profile picture was updated successfully.");
-                System.out.println("PROFILEEEEEEEEEEEE");
+                responseJson.put("message", "Your cover picture was updated successfully.");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

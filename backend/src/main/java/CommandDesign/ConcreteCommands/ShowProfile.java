@@ -153,8 +153,10 @@ public class ShowProfile extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                PostgresConnection.disconnect(set, proc, dbConn, null);
+
             }
+            PostgresConnection.disconnect(set, proc, dbConn, null);
+
         }
     }
 }
