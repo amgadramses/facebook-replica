@@ -31,6 +31,7 @@ public class RemoveWorkCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("message", "Work removed successfully.");
             UserCache.userCache.del("get_works" + ":" + parameters.get("user_id"));
+            UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
 
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);

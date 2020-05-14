@@ -32,6 +32,8 @@ public class GetFriendsCommand extends Command {
         String modified_user_id = USERS_COLLECTION+"/"+user_id;
 
         String query = "LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) FOR friend IN "+FRIENDS_COLLECTION+ " FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend";
+        //"LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) LET countVal = (FOR friend IN "+FRIENDS_COLLECTION+ " FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend) RETURN count(countVal)";
+
         Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 

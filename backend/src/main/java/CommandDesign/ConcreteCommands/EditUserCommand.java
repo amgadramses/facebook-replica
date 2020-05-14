@@ -42,6 +42,7 @@ public class EditUserCommand extends Command {
                 responseJson.put("message", "Your password has been changed successfully.");
             else
                 responseJson.put("message", "Your " + parameters.get("field") + " changed to " + parameters.get("value"));
+            UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
 
         } catch (SQLException e) {
             responseJson.put("app", parameters.get("app"));

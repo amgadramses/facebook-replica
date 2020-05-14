@@ -37,6 +37,8 @@ public class AddEducationCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("message", "Successfully added a new education record.");
             UserCache.userCache.del("get_educations" + ":" + parameters.get("user_id"));
+            UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
+
 
         }
         catch (SQLException e) {

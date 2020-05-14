@@ -37,6 +37,7 @@ public class AddWorkCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("message", "Successfully added a new work record.");
             UserCache.userCache.del("get_works" + ":" + parameters.get("user_id"));
+            UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
 
         }
         catch (SQLException e) {

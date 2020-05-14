@@ -1,6 +1,7 @@
 package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
+import Redis.UserCache;
 import io.minio.MinioClient;
 import io.minio.errors.*;
 
@@ -12,6 +13,7 @@ public class UploadProfilePictureCommand extends Command {
     protected void execute() {
         user_id = parameters.get("user_id");
         MinioClient minioClient = null;
+//        UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
 
         try {
             minioClient = new MinioClient("http://192.168.1.6:9000", "minioadmin", "minioadmin");

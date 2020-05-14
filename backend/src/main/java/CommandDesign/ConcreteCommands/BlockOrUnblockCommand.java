@@ -54,6 +54,8 @@ public class BlockOrUnblockCommand extends Command {
                 UserCache.userCache.del("getFriends" + ":" + blocked_id);
                 UserCache.userCache.del("getFollowers" + ":" + blocked_id);
                 UserCache.userCache.del("getFollowing" + ":" + blocked_id);
+                UserCache.userCache.del("showProfile"+":"+parameters.get("user_id"));
+
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {
