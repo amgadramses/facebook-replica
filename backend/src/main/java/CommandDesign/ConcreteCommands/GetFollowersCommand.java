@@ -2,17 +2,15 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
-import Entities.Followers;
-import Entities.FriendRequests;
 import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.ArangoCursor;
-import com.arangodb.ArangoDB;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.BaseEdgeDocument;
 import com.arangodb.util.MapBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -36,7 +34,7 @@ public class GetFollowersCommand extends Command {
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 
         if(cursor.hasNext()){
-            Followers followers = new Followers();
+            ArrayList<BaseEdgeDocument> followers = new ArrayList<BaseEdgeDocument>();
             while (cursor.hasNext()) {
                 followers.add(cursor.next());
             }
@@ -45,7 +43,7 @@ public class GetFollowersCommand extends Command {
             responseJson.put("method", parameters.get("method"));
             responseJson.put("status", "ok");
             responseJson.put("code", "200");
-            responseJson.set("friendRequests", nf.pojoNode(followers));
+            responseJson.set("followers", nf.pojoNode(followers));
 
             try {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));

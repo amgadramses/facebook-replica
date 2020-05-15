@@ -2,17 +2,14 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
-import Entities.FriendRequests;
 import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.*;
 import com.arangodb.entity.BaseEdgeDocument;
-import com.arangodb.model.AqlQueryOptions;
 import com.arangodb.util.MapBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -34,7 +31,7 @@ public class RetrieveFriendRequestsCommand extends Command {
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 
         if(cursor.hasNext()) {
-            FriendRequests requests = new FriendRequests();
+            ArrayList<BaseEdgeDocument> requests = new ArrayList<BaseEdgeDocument>();
             while (cursor.hasNext()) {
                 requests.add(cursor.next());
             }

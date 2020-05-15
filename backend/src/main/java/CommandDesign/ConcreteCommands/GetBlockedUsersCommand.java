@@ -2,8 +2,6 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
-import Entities.BlockedUsers;
-import Entities.Friends;
 import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.ArangoCursor;
@@ -12,6 +10,7 @@ import com.arangodb.entity.BaseEdgeDocument;
 import com.arangodb.util.MapBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -33,7 +32,7 @@ public class GetBlockedUsersCommand extends Command {
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
 
         if(cursor.hasNext()) {
-            BlockedUsers blockedUsers = new BlockedUsers();
+            ArrayList<BaseEdgeDocument> blockedUsers = new ArrayList<BaseEdgeDocument>();
             while (cursor.hasNext()) {
                 blockedUsers.add(cursor.next());
             }

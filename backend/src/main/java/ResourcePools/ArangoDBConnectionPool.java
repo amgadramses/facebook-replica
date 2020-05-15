@@ -6,11 +6,11 @@ public class ArangoDBConnectionPool {
     private final static int MAX_CONNECTIONS = 30;
     private static ArangoDB arangoDB;
 
-    public static void initSource(){
+    public static void initSource() {
         arangoDB = new ArangoDB.Builder().maxConnections(MAX_CONNECTIONS).build();
     }
 
-    public static ArangoDB getDriver(){
+    public static ArangoDB getDriver() {
         return arangoDB;
     }
 }

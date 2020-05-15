@@ -2,7 +2,11 @@ package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
 import CommandDesign.CommandsHelp;
+import ResourcePools.ArangoDBConnectionPool;
 import ResourcePools.PostgresConnection;
+import com.arangodb.ArangoDBException;
+import com.arangodb.ArangoDatabase;
+import com.arangodb.entity.BaseDocument;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.Date;
@@ -13,6 +17,8 @@ import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 public class RegisterCommand extends Command {
     private final Logger log = Logger.getLogger(RegisterCommand.class.getName());
+    final String DB_NAME = "SocialDB";
+    final String USERS_COLLECTION = "Users";
 
 
     @Override
@@ -31,6 +37,21 @@ public class RegisterCommand extends Command {
             proc.setString(6, encrypted_password);
             proc.execute();
             proc.close();
+            String user_id = null;
+            BaseDocument myObject = new BaseDocument();
+            myObject.setKey(user_id);
+            myObject.addAttribute("a", "Foo");
+            myObject.addAttribute("b", 42);
+            try {
+                arangoDB = ArangoDBConnectionPool.getDriver();
+                ArangoDatabase db = arangoDB.db(DB_NAME);
+                db.collection(USERS_COLLECTION).insertDocument(myObject);
+                System.out.println("Document created");
+            } catch (ArangoDBException e) {
+                System.err.println("Failed to create document. " + e.getMessage());
+            }
+
+
             responseJson.put("app", parameters.get("app"));
             responseJson.put("method", parameters.get("method"));
             responseJson.put("status", "ok");

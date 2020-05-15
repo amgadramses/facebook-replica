@@ -28,7 +28,7 @@ public class UploadProfilePictureCommand extends Command {
 
 
         try {
-            minioClient = new MinioClient("http://192.168.1.102:9000", "minioadmin", "minioadmin");
+            minioClient = new MinioClient("http://localhost:9000", "minioadmin", "minioadmin");
         } catch (InvalidEndpointException e) {
             e.printStackTrace();
         } catch (InvalidPortException e) {

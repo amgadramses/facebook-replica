@@ -1,7 +1,6 @@
 package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
-import Entities.Friends;
 import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import ResourcePools.PostgresConnection;
