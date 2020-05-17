@@ -1,8 +1,8 @@
 version: '2.1'
 
 services:
-  webserver:
-    image: facebook-replica-webserver
+  webserver1:
+    image: facebook-replica-webserver1-test
     ports:
       - 8080:8080
     depends_on:
@@ -10,13 +10,33 @@ services:
         condition: service_healthy
     network_mode: "host"
 
+  webserver2:
+    image: facebook-replica-webserver2-test
+    ports:
+      - 8081:8081
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    network_mode: "host"
+
+  haproxy:
+    image: facebook-replica-loadbalancer
+    volumes:
+      - ./haproxy-data:/usr/app/haproxy
+    depends_on:
+      - webserver1
+      - webserver2
+    ports:
+      - 80:80
+    network_mode: "host"
 
   userapp:
-    image: facebook-replica
+    image: facebook-replica-test
     depends_on:
       - postgresdb
       - arangodb
-      - webserver
+      - webserver1
+      - webserver2
       - redis
       - miniodb
 

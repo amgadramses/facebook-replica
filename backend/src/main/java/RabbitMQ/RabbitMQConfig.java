@@ -1,6 +1,5 @@
 package RabbitMQ;
 
-import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
@@ -18,11 +17,8 @@ public class RabbitMQConfig {
 
     public Connection connect() throws IOException, TimeoutException {
         if (connection == null) {
-//            connection = connectionFactory.createConnection();
-//            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
-//            connection.start();
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("rabbitmq");
+            factory.setHost("rabbitmq"); //should be localhost when you mvn package for the webservers
             connection = factory.newConnection();
 
         }
