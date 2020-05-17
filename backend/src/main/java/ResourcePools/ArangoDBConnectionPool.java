@@ -7,7 +7,7 @@ public class ArangoDBConnectionPool {
     private static ArangoDB arangoDB;
 
     public static void initSource() {
-        arangoDB = new ArangoDB.Builder().maxConnections(MAX_CONNECTIONS).build();
+        arangoDB = new ArangoDB.Builder().host("arangodb",8529).maxConnections(MAX_CONNECTIONS).build();
     }
 
     public static ArangoDB getDriver() {

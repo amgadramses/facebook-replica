@@ -5,15 +5,10 @@ import RabbitMQ.Message;
 import RabbitMQ.RabbitMQConfig;
 import RabbitMQ.Receiver;
 import Redis.UserCache;
-import ResourcePools.ArangoDBConnectionPool;
-import ResourcePools.JedisConnectionPool;
-import ResourcePools.PostgresConnection;
-import ResourcePools.WorkerPool;
-
+import ResourcePools.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 public class UserMain extends RunnableClasses {
     private static final Logger log = Logger.getLogger(UserMain.class.getName());
     private static WorkerPool pool = new WorkerPool();
@@ -24,6 +19,13 @@ public class UserMain extends RunnableClasses {
         PostgresConnection.initSource();
         ArangoDBConnectionPool.initSource();
         JedisConnectionPool.initSource();
+        try{
+            PostgreSQLInitializer.initPostgreSQL();
+            ArangoDBInitializer.initArangoDB();
+        }
+        catch(Exception e){
+            System.out.println("Database already initialised!!");
+        }
         CommandsMap.instantiate();
         UserCache.userBgSave();
         Receiver c = new Receiver(new RabbitMQConfig("USER"));

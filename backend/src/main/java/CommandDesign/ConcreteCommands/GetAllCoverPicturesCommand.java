@@ -6,10 +6,10 @@ import io.minio.MinioClient;
 import io.minio.Result;
 
 import io.minio.messages.Item;
-import sun.misc.BASE64Encoder;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.logging.Logger;
 
 public class GetAllCoverPicturesCommand extends Command {
@@ -21,7 +21,7 @@ public class GetAllCoverPicturesCommand extends Command {
         MinioClient minioClient = null;
 
         try {
-            minioClient = new MinioClient("http://localhost:9000", "minioadmin", "minioadmin");
+            minioClient = new MinioClient("http://miniodb:9000", "minioadmin", "minioadmin");
             if (minioClient != null) {
                 user_id = parameters.get("user_id");
                 String bucketName = "coverpicturebucket" + user_id;
@@ -36,8 +36,9 @@ public class GetAllCoverPicturesCommand extends Command {
                         byte[] imageBytes = new byte[(int) item.size()];
                         is.read(imageBytes, 0, imageBytes.length);
                         is.close();
-                        BASE64Encoder encoder = new BASE64Encoder();
-                        String imgBase64 = encoder.encode(imageBytes);
+
+                        byte[] encoded = Base64.getEncoder().encode(imageBytes);
+                        String imgBase64 = new String(encoded);
                         pictures.add(imgBase64);
                     }
                     responseJson.put("app", parameters.get("app"));

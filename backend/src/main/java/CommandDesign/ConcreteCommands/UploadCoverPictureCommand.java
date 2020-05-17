@@ -18,7 +18,7 @@ public class UploadCoverPictureCommand extends Command {
     private final Logger log = Logger.getLogger(UploadCoverPictureCommand.class.getName());
     private String user_id;
     private String base64Img;
-    final String IP_ADDRESS = "http://localhost:9000"; //Replace with your IP address+ port 9000
+    final String IP_ADDRESS = "http://miniodb:9000"; //Replace with your IP address+ port 9000
     @Override
     protected void execute() {
         user_id = parameters.get("user_id");

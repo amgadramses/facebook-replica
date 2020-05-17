@@ -1,3 +1,5 @@
+package ResourcePools;
+
 import ResourcePools.ArangoDBConnectionPool;
 import com.arangodb.ArangoDB;
 import com.arangodb.ArangoDBException;
@@ -12,7 +14,7 @@ import java.util.Arrays;
 
 public class ArangoDBInitializer {
 
-    public static void main(String[] args) {
+    public static void initArangoDB() {
         ArangoDBConnectionPool.initSource();
         ArangoDB arangoDB = ArangoDBConnectionPool.getDriver();
 

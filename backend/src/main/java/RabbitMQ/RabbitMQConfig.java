@@ -22,7 +22,7 @@ public class RabbitMQConfig {
 //            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
 //            connection.start();
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
+            factory.setHost("rabbitmq");
             connection = factory.newConnection();
 
         }

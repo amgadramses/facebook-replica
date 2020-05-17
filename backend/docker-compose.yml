@@ -1,0 +1,78 @@
+version: '2.1'
+
+services:
+  webserver:
+    image: facebook-replica-webserver
+    ports:
+      - 8080:8080
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    network_mode: "host"
+
+
+  userapp:
+    image: facebook-replica
+    depends_on:
+      - postgresdb
+      - arangodb
+      - webserver
+      - redis
+      - miniodb
+
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./rabbitmq-data:/usr/app/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  postgresdb:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-data:/usr/app/postgres
+    environment:
+      POSTGRES_PASSWORD: jesus
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+
+
+  arangodb:
+    hostname: arangodb
+    image: arangodb:3.5.4
+    ports:
+      - 8529:8529
+    volumes:
+      - ./arangodb-data:/usr/app/arangodb
+    environment:
+      - ARANGO_NO_AUTH=1
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./redis-data:/usr/app/redis
+    ports:
+      - 6379:6379
+
+  miniodb:
+    image: minio/minio
+    ports:
+      - 9000:9000
+    volumes:
+      - ./minio:/usr/app/minio
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.logging.Logger;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
@@ -26,22 +27,23 @@ public class RegisterCommand extends Command {
         try {
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(true);
-            proc = dbConn.prepareCall("{ call register_user(?,?,?,?,?,?) }");
+            proc = dbConn.prepareCall("{ ? = call register_user(?,?,?,?,?,?) }");
             proc.setPoolable(true);
+            proc.registerOutParameter(1, Types.INTEGER);
             String encrypted_password = sha256Hex(parameters.get("password"));
-            proc.setString(1, parameters.get("first_name"));
-            proc.setString(2, parameters.get("last_name"));
-            proc.setString(3, parameters.get("email").toLowerCase());
-            proc.setString(4, parameters.get("phone"));
-            proc.setDate(5, Date.valueOf(parameters.get("birth_date")));
-            proc.setString(6, encrypted_password);
+            proc.setString(2, parameters.get("first_name"));
+            proc.setString(3, parameters.get("last_name"));
+            proc.setString(4, parameters.get("email").toLowerCase());
+            proc.setString(5, parameters.get("phone"));
+            proc.setDate(6, Date.valueOf(parameters.get("birth_date")));
+            proc.setString(7, encrypted_password);
             proc.execute();
+            int user_id = proc.getInt(1);
             proc.close();
-            String user_id = null;
             BaseDocument myObject = new BaseDocument();
-            myObject.setKey(user_id);
-            myObject.addAttribute("a", "Foo");
-            myObject.addAttribute("b", 42);
+            myObject.setKey(String.valueOf(user_id));
+            myObject.addAttribute("first_name", parameters.get("first_name"));
+            myObject.addAttribute("last_name", parameters.get("last_name"));
             try {
                 arangoDB = ArangoDBConnectionPool.getDriver();
                 ArangoDatabase db = arangoDB.db(DB_NAME);
