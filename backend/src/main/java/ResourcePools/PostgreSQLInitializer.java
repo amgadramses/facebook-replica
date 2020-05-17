@@ -19,7 +19,7 @@ public class PostgreSQLInitializer {
         try {
             dbConn = PostgresConnection.getDataSource().getConnection();
             statement = dbConn.createStatement();
-            statement.executeUpdate("DROP DATABASE mydb");
+            statement.executeUpdate("CREATE DATABASE facebookPostgres");
             ScriptRunner sr = new ScriptRunner(dbConn);
             Reader reader = null;
             try {
@@ -36,7 +36,7 @@ public class PostgreSQLInitializer {
             System.err.println("Failed to Execute" + sqlPath
                     + " The error is " + e.getMessage());
         } finally {
-            PostgresConnection.disconnect(null, (PreparedStatement) statement, dbConn, null);
+//            PostgresConnection.disconnect(null, (PreparedStatement) statement, dbConn, null);
 
         }
     }

@@ -327,7 +327,7 @@ BEGIN
 OPEN cursor FOR
 (SELECT *, 1 AS type
 FROM Users U
-INNER JOIN Education E
+LEFT OUTER JOIN Education E
 ON E.user_id = U.user_id
 WHERE U.user_id = $1)
 UNION
