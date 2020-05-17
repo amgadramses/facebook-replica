@@ -5,10 +5,9 @@ import CommandDesign.CommandsHelp;
 import io.minio.MinioClient;
 import io.minio.Result;
 import io.minio.messages.Item;
-import sun.misc.BASE64Encoder;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.logging.Logger;
 
 public class GetCurrentProfilePictureCommand extends Command {
@@ -33,8 +32,9 @@ public class GetCurrentProfilePictureCommand extends Command {
                     byte[] imageBytes = new byte[(int) item.size()];
                     is.read(imageBytes, 0, imageBytes.length);
                     is.close();
-                    BASE64Encoder encoder = new BASE64Encoder();
-                    String imgBase64 = encoder.encode(imageBytes);
+                    byte[] encoded = Base64.getEncoder().encode(imageBytes);
+                    String imgBase64 = new String(encoded);
+
 
 
                     responseJson.put("app", parameters.get("app"));
