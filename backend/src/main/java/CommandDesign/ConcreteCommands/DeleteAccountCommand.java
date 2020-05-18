@@ -1,6 +1,7 @@
 package CommandDesign.ConcreteCommands;
 
 import CommandDesign.Command;
+import CommandDesign.CommandsHelp;
 import Redis.UserCache;
 import ResourcePools.ArangoDBConnectionPool;
 import ResourcePools.PostgresConnection;
@@ -8,6 +9,7 @@ import com.arangodb.ArangoCursor;
 import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.BaseEdgeDocument;
 import com.arangodb.util.MapBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -50,17 +52,18 @@ public class DeleteAccountCommand extends Command {
             arangoDB = ArangoDBConnectionPool.getDriver();
             ArangoDatabase db = arangoDB.db(DB_NAME);
             String modified_user_id = USERS_COLLECTION+"/"+user_id;
-            String query = "REMOVE { `_key`: " + "\""+user_id+"\""+ "} IN Users";
-            ArangoCursor<BaseEdgeDocument> cursor = db.query(query, null, null, BaseEdgeDocument.class);
             String friendsRmQuery = "FOR fr IN "+ FRIENDS_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ FRIENDS_COLLECTION;
             Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
-            cursor = db.query(friendsRmQuery, bindVars, null, BaseEdgeDocument.class);
+            ArangoCursor<BaseEdgeDocument> cursor = db.query(friendsRmQuery, bindVars, null, BaseEdgeDocument.class);
             String blocksRmQuery = "FOR fr IN "+ BLOCKS_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ BLOCKS_COLLECTION;
             cursor = db.query(blocksRmQuery, bindVars, null, BaseEdgeDocument.class);
             String requestsRMQuery = "FOR fr IN "+ REQUEST_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ REQUEST_COLLECTION;
             cursor = db.query(requestsRMQuery, bindVars, null, BaseEdgeDocument.class);
             String followsRMQuery = "FOR fr IN "+ FOLLOWS_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ FOLLOWS_COLLECTION;
             cursor = db.query(followsRMQuery, bindVars, null, BaseEdgeDocument.class);
+
+            String query = "REMOVE { `_key`: " + "\""+user_id+"\""+ "} IN Users";
+             cursor = db.query(query, null, null, BaseEdgeDocument.class);
 
 
             responseJson.put("app", parameters.get("app"));
@@ -69,14 +72,19 @@ public class DeleteAccountCommand extends Command {
             responseJson.put("code", "200");
             responseJson.put("code", "200");
             responseJson.put("message","Your account has been deleted successfully.");
+            try {
+                CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            //TODO send response
-            PostgresConnection.disconnect(set, proc, dbConn, null);
 
+
+            PostgresConnection.disconnect(set, proc, dbConn, null);
         }
     }
 }

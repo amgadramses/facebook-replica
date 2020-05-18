@@ -22,7 +22,6 @@ public abstract class Command implements Runnable {
     protected ArangoDB arangoDB;
     protected CallableStatement proc;
     protected ResultSet set;
-
     protected JsonNodeFactory nf = JsonNodeFactory.instance;
     protected ObjectNode responseJson = nf.objectNode();
     protected Map<String, Object> toBeCached = new HashMap<String, Object>();
