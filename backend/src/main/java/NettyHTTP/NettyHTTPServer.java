@@ -29,7 +29,7 @@ public class NettyHTTPServer {
 //            b.option(ChannelOption.SO_KEEPALIVE, true);
             Channel ch = b.bind(port).sync().channel();
 
-            System.err.println("Server is listening on http://127.0.0.1:" + port + '/');
+            System.err.println("Server is listening on port" + port + '/');
 
             ch.closeFuture().sync();
 

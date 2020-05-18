@@ -34,7 +34,6 @@ public class BlockOrUnblockCommand extends Command {
         String query = "FOR doc IN "+ BLOCKS_COLLECTION +" FILTER doc.`_from` == " + "\""+ modified_user_id+"\"" +" && doc.`_to` == "+ "\""+ modified_blocked_id+"\"" +" RETURN doc";
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, null, null, BaseEdgeDocument.class);
 
-        System.out.println(cursor.hasNext());
 
         if(!cursor.hasNext()){ //Block
             BaseEdgeDocument blocked = new BaseEdgeDocument(modified_user_id, modified_blocked_id);

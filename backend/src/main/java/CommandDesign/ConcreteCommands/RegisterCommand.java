@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
@@ -48,9 +49,10 @@ public class RegisterCommand extends Command {
                 arangoDB = ArangoDBConnectionPool.getDriver();
                 ArangoDatabase db = arangoDB.db(DB_NAME);
                 db.collection(USERS_COLLECTION).insertDocument(myObject);
-                System.out.println("Document created");
             } catch (ArangoDBException e) {
-                System.err.println("Failed to create document. " + e.getMessage());
+                System.err.println("Failed to create document. ");
+                log.log(Level.SEVERE, e.getMessage(), e);
+
             }
 
 
@@ -62,7 +64,7 @@ public class RegisterCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
         } catch (SQLException e) {
             responseJson.put("app", parameters.get("app"));
@@ -76,7 +78,7 @@ public class RegisterCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException ex) {
-                ex.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
         } finally {
             PostgresConnection.disconnect(set, proc, dbConn, null);

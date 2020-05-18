@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PostgresConnection {
-    private static final Logger LOGGER = Logger
+    private static final Logger logger = Logger
             .getLogger(PostgresConnection.class.getName());
     private static String DB_USERNAME;   //your db username
     private static String DB_PASSWORD; //your db password
@@ -46,18 +46,24 @@ public class PostgresConnection {
             try {
                 rs.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
         if (conn != null) {
             try {
                 conn.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
 
@@ -65,7 +71,7 @@ public class PostgresConnection {
             try {
                 query.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }
@@ -76,18 +82,24 @@ public class PostgresConnection {
             try {
                 rs.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
         if (conn != null) {
             try {
                 conn.close();
             } catch (SQLException e) {
+                logger.log(Level.SEVERE, e.getMessage(), e);
+
             }
         }
 
@@ -99,7 +111,7 @@ public class PostgresConnection {
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException ex) {
-                LOGGER.log(Level.SEVERE,
+                logger.log(Level.SEVERE,
                         "Error loading Postgres driver: " + ex.getMessage(), ex);
             }
 
@@ -115,9 +127,9 @@ public class PostgresConnection {
 //                    readConfFile();
                     readJsonConfFile();
                 } catch (Exception e2) {
-                    e2.printStackTrace();
+                    logger.log(Level.SEVERE, e2.getMessage(), e2);
                 }
-                System.out.println("Used Config File For DB");
+
             }
 
 
@@ -148,7 +160,7 @@ public class PostgresConnection {
 
             dataSource = new PoolingDataSource<>(connectionPool);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Got error initializing data source: "
+            logger.log(Level.SEVERE, "Got error initializing data source: "
                     + ex.getMessage(), ex);
         }
     }
@@ -223,11 +235,7 @@ public class PostgresConnection {
                     setDBPort("5432");
             }
         }
-//        setDBUser("postgres");
-//        setDBPassword("jesus");
-//        setDBHost("localhost");
-//        setDBPort("5432");
-//        setDBName("postgres");
+
         if (!formatURL()) {
             throw new Exception("Wrong Format in Postgres.conf");
 

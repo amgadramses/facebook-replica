@@ -10,13 +10,8 @@ public class WorkerPool {
 
 
     public WorkerPool() {
-
-        ThreadFactory threadFactory = Executors.defaultThreadFactory();
         executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-//        executor.setMaximumPoolSize(MAX_POOL_SIZE);
 
-//        RejectedExecutionHandlerImpl rejectionHandler = new RejectedExecutionHandlerImpl();
-//        executor.setRejectedExecutionHandler(rejectionHandler);
     }
 
     public void shutdown() {
@@ -24,7 +19,7 @@ public class WorkerPool {
     }
 
     public void execute(Runnable r) {
-        //System.out.println("WORKER POOL EXEC");
+
         executor.execute(r);
     }
 

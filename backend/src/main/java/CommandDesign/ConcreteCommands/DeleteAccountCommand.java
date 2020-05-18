@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeleteAccountCommand extends Command {
@@ -75,12 +76,12 @@ public class DeleteAccountCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         } finally {
 
 

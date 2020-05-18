@@ -10,6 +10,7 @@ import com.arangodb.entity.BaseDocument;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ReportUserCommand extends Command {
@@ -49,7 +50,7 @@ public class ReportUserCommand extends Command {
 
             CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }

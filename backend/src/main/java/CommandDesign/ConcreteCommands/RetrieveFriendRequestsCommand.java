@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RetrieveFriendRequestsCommand extends Command {
@@ -46,7 +47,7 @@ public class RetrieveFriendRequestsCommand extends Command {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
         }
 
@@ -60,7 +61,7 @@ public class RetrieveFriendRequestsCommand extends Command {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
         }

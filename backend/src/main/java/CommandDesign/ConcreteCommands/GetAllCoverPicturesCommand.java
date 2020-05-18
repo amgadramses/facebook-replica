@@ -10,6 +10,7 @@ import io.minio.messages.Item;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GetAllCoverPicturesCommand extends Command {
@@ -31,7 +32,6 @@ public class GetAllCoverPicturesCommand extends Command {
                     ArrayList<String> pictures = new ArrayList<String>();
                     for (Result<Item> result : results) {
                         Item item = result.get();
-                        System.out.println(item.lastModified() + ", " + item.size() + ", " + item.objectName());
                         InputStream is = minioClient.getObject(bucketName, item.objectName());
                         byte[] imageBytes = new byte[(int) item.size()];
                         is.read(imageBytes, 0, imageBytes.length);
@@ -58,7 +58,7 @@ public class GetAllCoverPicturesCommand extends Command {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }

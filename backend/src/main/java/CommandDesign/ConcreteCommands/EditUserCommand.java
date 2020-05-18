@@ -7,6 +7,7 @@ import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
@@ -19,7 +20,6 @@ public class EditUserCommand extends Command {
     protected void execute() {
         try {
 
-            System.out.println(UserCache.userCache.get("user"));
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(true);
             proc = dbConn.prepareCall("{ call edit_user_detail(?,?,?) }");
@@ -57,7 +57,7 @@ public class EditUserCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
             PostgresConnection.disconnect(set, proc, dbConn, null);
 

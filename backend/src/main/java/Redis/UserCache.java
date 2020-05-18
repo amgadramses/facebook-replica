@@ -14,7 +14,6 @@ public class UserCache {
         Runnable runnable = () -> {
             String res;
             res = userCache.bgsave();
-            System.out.println(res);
         };
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(runnable, 0, 15, TimeUnit.MINUTES);

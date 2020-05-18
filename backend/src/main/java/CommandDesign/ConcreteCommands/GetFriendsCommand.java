@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GetFriendsCommand extends Command {
@@ -29,7 +30,6 @@ public class GetFriendsCommand extends Command {
         String modified_user_id = USERS_COLLECTION+"/"+user_id;
 
         String query = "LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) FOR friend IN "+FRIENDS_COLLECTION+ " FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend";
-        //"LET Q1 = (FOR block IN "+ BLOCKS_COLLECTION+" FILTER block.`_from` == @value ||block.`_to` == @value RETURN APPEND([], [block.`_from`,block.`_to` ])) LET Q2 = (MINUS(UNIQUE(FLATTEN(Q1)), [@value])) LET countVal = (FOR friend IN "+FRIENDS_COLLECTION+ " FILTER (friend.`_to` == @value || friend.`_from` == @value) && !(POSITION(Q2, friend.`_to` ) || POSITION(Q2, friend.`_from`)) RETURN friend) RETURN count(countVal)";
 
         Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, bindVars, null, BaseEdgeDocument.class);
@@ -50,12 +50,11 @@ public class GetFriendsCommand extends Command {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
     }
         else{
-            System.out.println("ELSe");
             responseJson.put("app", parameters.get("app"));
             responseJson.put("method", parameters.get("method"));
             responseJson.put("status", "ok");
@@ -65,7 +64,7 @@ public class GetFriendsCommand extends Command {
                 UserCache.userCache.set(parameters.get("method")+":"+user_id, mapper.writeValueAsString(responseJson));
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
         }

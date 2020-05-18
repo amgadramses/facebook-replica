@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class AddWorkCommand extends Command {
@@ -54,7 +55,8 @@ public class AddWorkCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
+
             }
             PostgresConnection.disconnect(set, proc, dbConn, null);
         }

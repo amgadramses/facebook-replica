@@ -32,12 +32,10 @@ public class FollowOrUnfollowCommand extends Command {
         ArangoDatabase db = arangoDB.db(DB_NAME);
         ArangoGraph graph = db.graph(REQUEST_GRAPH);
         ArangoEdgeCollection collection = graph.edgeCollection(FOLLOWS_COLLECTION);
-        System.out.println("FOR doc IN "+ FOLLOWS_COLLECTION +" FILTER doc.`_from` == " + "\""+ modified_user_id+"\"" +" && doc.`_to` == "+ "\""+ modified_followed_id+"\"" +" RETURN doc");
 
         String query = "FOR doc IN "+ FOLLOWS_COLLECTION +" FILTER doc.`_from` == " + "\""+ modified_user_id+"\"" +" && doc.`_to` == "+ "\""+ modified_followed_id+"\"" +" RETURN doc";
         ArangoCursor<BaseEdgeDocument> cursor = db.query(query, null, null, BaseEdgeDocument.class);
 
-        System.out.println(cursor.hasNext());
 
         if(!cursor.hasNext()){ //follow
             BaseEdgeDocument followed = new BaseEdgeDocument(modified_user_id, modified_followed_id);

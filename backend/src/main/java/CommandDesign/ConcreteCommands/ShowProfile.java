@@ -18,10 +18,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.sql.*;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ShowProfile extends Command {
-    //Should return user data + list of education & work + Profile & Cover photo + Friends count + Followers count
     private final Logger log = Logger.getLogger(ShowProfile.class.getName());
     int user_id=-1;
     private String last_name, first_name, email, phone;
@@ -128,7 +128,7 @@ public class ShowProfile extends Command {
                 try {
                     UserCache.userCache.set(parameters.get("method") + ":" + user_id, mapper.writeValueAsString(responseJson));
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                    log.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
             else{
@@ -144,12 +144,13 @@ public class ShowProfile extends Command {
             responseJson.put("status", "Bad Request");
             responseJson.put("code", "400");
             responseJson.put("message", "Bad Request");
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
         finally {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
+                log.log(Level.SEVERE, e.getMessage(), e);
 
             }
             PostgresConnection.disconnect(set, proc, dbConn, null);

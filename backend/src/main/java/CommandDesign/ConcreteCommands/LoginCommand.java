@@ -7,6 +7,7 @@ import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
@@ -20,10 +21,8 @@ public class LoginCommand extends Command {
 
     @Override
     protected void execute() {
-        //System.out.println("LOGIN EXEC");
 
         try {
-            System.out.println("db" + PostgresConnection.getDataSource());
             dbConn = PostgresConnection.getDataSource().getConnection();
             dbConn.setAutoCommit(false);
 
@@ -100,12 +99,12 @@ public class LoginCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         } finally {
             PostgresConnection.disconnect(set, proc, dbConn, null);
         }

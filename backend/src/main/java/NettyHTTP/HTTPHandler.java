@@ -55,19 +55,17 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
             ctx.fireChannelRead(content.copy());
         }
         if (msg instanceof LastHttpContent) {
-//            LastHttpContent trailer = (LastHttpContent) msg;
-            HttpObject trailer = (HttpObject) msg;
-            writeResponse(trailer, ctx);
+            writeResponse(ctx);
         }
     }
 
-    private synchronized void writeResponse(HttpObject currentObj, final ChannelHandlerContext ctx) throws ExecutionException, InterruptedException {
-        System.out.println("Request Body: " + requestBody);
+    private synchronized void writeResponse(final ChannelHandlerContext ctx) throws ExecutionException, InterruptedException {
+
         JSONObject requestJson = new JSONObject(requestBody);
 
         Notifier notifier = new Notifier(this, requestJson.getString("app"));
         
-        System.out.println("waited");
+
         sendToMQ(requestBody, requestJson.getString("app").toUpperCase());
         Future future = executorService.submit(notifier);
         this.responseBody = (String) future.get();
@@ -78,9 +76,7 @@ public class HTTPHandler extends SimpleChannelInboundHandler<Object> {
             System.out.println("Null Response Method: " + requestJson.getString("method"));
         }
 
-        System.out.println("notified");
-        System.out.println("netty" + getResponseBody());
-        System.out.println("-----------");
+
 
         JSONObject json = new JSONObject(getResponseBody());
         HttpResponseStatus status = null;

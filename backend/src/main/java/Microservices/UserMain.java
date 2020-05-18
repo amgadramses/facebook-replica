@@ -25,7 +25,6 @@ public class UserMain extends RunnableClasses {
         }
         catch(Exception e){
             System.out.println("Database already initialised!!");
-            e.printStackTrace();
         }
         CommandsMap.instantiate();
         UserCache.userBgSave();

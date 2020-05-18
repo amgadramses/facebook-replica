@@ -23,9 +23,8 @@ public class Notifier implements Callable<String> {
     public String call() throws Exception {
         RabbitMQConfig config = new RabbitMQConfig(getQueueName().toUpperCase());
         Receiver r = new Receiver(config, serverHandler.getCorrelationId());
-        System.out.println("Not received yet!!!!!!!!!!!!");
+
         Message response = r.receive();
-        System.out.println("Notifier received!!!!!!!!!!! "+response.getBody());
 //        r.getChannel().close();
         r.getConnection().close();
         return response.getBody();

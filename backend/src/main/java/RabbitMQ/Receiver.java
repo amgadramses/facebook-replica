@@ -55,7 +55,6 @@ public class Receiver {
                                            byte[] body) throws IOException {
                     if (properties.getCorrelationId().equals(corrID)) {
                         Message msg = new Message(new String(body, "UTF-8"), properties);
-                        System.out.println("else");
 
                         response.offer(msg);
                         channel.basicAck(envelope.getDeliveryTag(), false);
@@ -85,30 +84,4 @@ public class Receiver {
         return connection;
     }
 
-//    public static void main(String[] args) throws IOException, TimeoutException {
-//        {
-//            Message msg = null;
-////            Receiver r2 = new Receiver(new RabbitMQConfig("USER"),"d037e384-c718-4c84-b4df-317b3b9a5531");
-//            Receiver r1 = new Receiver(new RabbitMQConfig("USER"));
-//            try {
-//                System.out.println("TRY");
-////                System.out.println("R2 received: "+ r2.receive());
-//                msg = r1.receive();
-//                System.out.println("R1 received: " + msg);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                System.out.println("CATCH");
-//            } finally {
-//                System.out.println("FINAALLLYY");
-////              r1.channel.close();
-//                r1.connection.close();
-//            }
-//
-////            Sender2 s = new Sender2(new RabbitMQConfig("USER"));
-////            Logger log = Logger.getLogger(NettyHTTPServer.class.getName());
-////            Message m = new Message("YOUKAAA", msg.getProps());
-////            s.send(m, log);
-//        }
-//
-//    }
 }

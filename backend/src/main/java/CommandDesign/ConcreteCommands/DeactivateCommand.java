@@ -7,6 +7,7 @@ import ResourcePools.PostgresConnection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DeactivateCommand extends Command {
@@ -37,11 +38,11 @@ public class DeactivateCommand extends Command {
             try {
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                log.log(Level.SEVERE, e.getMessage(), e);
             }
 
         }catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         } finally {
             PostgresConnection.disconnect(set, proc, dbConn, null);
         }
