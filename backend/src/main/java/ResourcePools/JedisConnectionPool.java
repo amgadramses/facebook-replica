@@ -13,11 +13,10 @@ public class JedisConnectionPool {
         poolConfig.setMaxTotal(128);
         poolConfig.setMaxIdle(128);
         poolConfig.setMinIdle(16);
-        pool = new JedisPool(poolConfig,    "redis");
+        pool = new JedisPool(poolConfig,"redis");
     }
 
     public static JedisPool getPool() {
         return pool;
     }
-//Jedis jedis = getPool().getResource();
 }

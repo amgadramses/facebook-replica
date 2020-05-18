@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   webserver1:
-    image: facebook-replica-webserver1-test
+    image: facebook-replica-webserver1
     ports:
       - 8080:8080
     depends_on:
@@ -11,7 +11,7 @@ services:
     network_mode: "host"
 
   webserver2:
-    image: facebook-replica-webserver2-test
+    image: facebook-replica-webserver2
     ports:
       - 8081:8081
     depends_on:
@@ -31,7 +31,7 @@ services:
     network_mode: "host"
 
   userapp:
-    image: facebook-replica-test
+    image: facebook-replica
     depends_on:
       - postgresdb
       - arangodb

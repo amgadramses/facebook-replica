@@ -35,6 +35,7 @@ public class RunnableClasses {
                     log.log(Level.SEVERE,
                             "Invalid Request. Class \"" + map.get("method") + "\" Not Found");
                 } else {
+
                     String cacheEntry = UserCache.userCache.get(map.get("method") +":"+ map.get("user_id"));
                     if (cacheEntry != null) {
                         System.out.println("CACHE HIT");

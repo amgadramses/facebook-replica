@@ -76,7 +76,7 @@ public class ShowProfile extends Command {
                     e.setInstitution(set.getString("institution"));
                     e.setDegree(set.getString("degree"));
                     educations.addPOJO(e);
-                } else {
+                } else if (set.getInt("type") == 2){
                     Work e = new Work();
                     e.setId(set.getInt("id"));
                     e.setStart_date(set.getDate("start_date"));
