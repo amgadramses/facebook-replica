@@ -53,7 +53,7 @@ public class DeleteAccountCommand extends Command {
             String query = "REMOVE { `_key`: " + "\""+user_id+"\""+ "} IN Users";
             ArangoCursor<BaseEdgeDocument> cursor = db.query(query, null, null, BaseEdgeDocument.class);
             String friendsRmQuery = "FOR fr IN "+ FRIENDS_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ FRIENDS_COLLECTION;
-            Map<String, Object> bindVars = new MapBuilder().put("value", "Users/"+user_id).get();
+            Map<String, Object> bindVars = new MapBuilder().put("value", modified_user_id).get();
             cursor = db.query(friendsRmQuery, bindVars, null, BaseEdgeDocument.class);
             String blocksRmQuery = "FOR fr IN "+ BLOCKS_COLLECTION+" FILTER fr.`_to` == @value || fr.`_from` == @value REMOVE {`_key`: fr.`_key`} IN "+ BLOCKS_COLLECTION;
             cursor = db.query(blocksRmQuery, bindVars, null, BaseEdgeDocument.class);

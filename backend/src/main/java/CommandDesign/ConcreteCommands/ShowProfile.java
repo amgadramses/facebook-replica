@@ -26,7 +26,6 @@ public class ShowProfile extends Command {
     int user_id=-1;
     private String last_name, first_name, email, phone;
     private Timestamp created_at;
-    private boolean is_active;
     private Date birth_date;
 
     final String USERS_COLLECTION = "Users";
@@ -63,7 +62,6 @@ public class ShowProfile extends Command {
                     first_name = set.getString("first_name");
                     last_name = set.getString("last_name");
                     created_at = set.getTimestamp("created_at");
-                    is_active = set.getBoolean("is_active");
                     phone = set.getString("phone");
                     birth_date = set.getDate("birth_date");
                 }
@@ -92,7 +90,6 @@ public class ShowProfile extends Command {
                 user.setFirst_name(first_name);
                 user.setLast_name(last_name);
                 user.setCreated_at(created_at);
-                user.setIs_active(is_active);
                 user.setPhone(phone);
                 user.setBirth_date(birth_date);
                 set.close();

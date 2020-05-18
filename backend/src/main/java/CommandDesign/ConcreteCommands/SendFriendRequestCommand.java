@@ -27,19 +27,19 @@ public class SendFriendRequestCommand extends Command {
 
 
     @Override
-    protected void execute(){
+    protected void execute() {
         int receiver = Integer.parseInt(parameters.get("receiver_id"));
         int sender = Integer.parseInt(parameters.get("user_id"));
-        receiverID = USERS_COLLECTION+"/"+ receiver;
-        senderID = USERS_COLLECTION+"/"+sender;
-        requestID = (int) (sender * receiver + (Math.pow((Math.abs(sender-receiver) - 1),2)/4))+""; // Unordered Pairing Function
+        receiverID = USERS_COLLECTION + "/" + receiver;
+        senderID = USERS_COLLECTION + "/" + sender;
+        requestID = (int) (sender * receiver + (Math.pow((Math.abs(sender - receiver) - 1), 2) / 4)) + ""; // Unordered Pairing Function
 
         arangoDB = ArangoDBConnectionPool.getDriver();
         ArangoDatabase db = arangoDB.db(DB_NAME);
         ArangoGraph graph = db.graph(REQUEST_GRAPH);
         ArangoEdgeCollection collection = graph.edgeCollection(REQUEST_COLLECTION);
         BaseEdgeDocument res = collection.getEdge(requestID, BaseEdgeDocument.class);
-        if(res == null) {
+        if (res == null) {
             BaseEdgeDocument friendRequest = new BaseEdgeDocument(senderID, receiverID);
             friendRequest.setKey(requestID);
 
@@ -54,14 +54,13 @@ public class SendFriendRequestCommand extends Command {
                 responseJson.put("to", receiverID);
                 responseJson.put("requestStatus", "pending");
 
-                UserCache.userCache.del("retrieveFriendRequests"+":"+receiver);
+                UserCache.userCache.del("retrieveFriendRequests" + ":" + receiver);
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
 
             } catch (ArangoDBException | JsonProcessingException e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
             }
-        }
-        else{
+        } else {
             try {
                 responseJson.put("app", parameters.get("app"));
                 responseJson.put("method", parameters.get("method"));
@@ -69,8 +68,7 @@ public class SendFriendRequestCommand extends Command {
                 responseJson.put("code", "400");
                 responseJson.put("message", "You can't send this request");
                 CommandsHelp.submit(parameters.get("app"), mapper.writeValueAsString(responseJson), parameters.get("correlation_id"), log);
-            }
-            catch (JsonProcessingException e){
+            } catch (JsonProcessingException e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
             }
         }

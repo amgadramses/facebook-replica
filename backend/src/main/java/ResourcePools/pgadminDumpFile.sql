@@ -223,19 +223,7 @@ CREATE OR REPLACE FUNCTION public.login(
 
 AS $$
 DECLARE cursor REFCURSOR := 'cur';
-isActive BOOLEAN;
-userID INTEGER;
 BEGIN
-	SELECT U.user_id, U.is_active
-    INTO userID, isActive
-    FROM users U
-    WHERE U.email = $1;
-	IF NOT isActive
-    THEN
-		UPDATE users U
-		SET is_active = TRUE
-		WHERE U.user_id = userID;
-    END IF;
 	OPEN cursor FOR
     SELECT *
     FROM users U
