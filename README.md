@@ -59,10 +59,3 @@ The databases contain dummy insertions so that you can test easily.
 5. Redis
 6. HAProxy
 7. Docker
-
-## Team Members
-
- 1. Youtham Joseph 37-5559
- 2. Amgad Ashraf 37-2058
- 3. Akram Ashraf 37-2076
- 4. Shady Younan 37-3236
